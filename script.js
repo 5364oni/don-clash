@@ -320,7 +320,6 @@ function canPlayCard(card) {
 
   return false;
 }
-
 function playSelectedCards(selectedSuit) {
   const player = players[currentPlayerIndex];
   const playedCards = [...selectedCards];
@@ -349,19 +348,30 @@ function playSelectedCards(selectedSuit) {
     currentSuit = topCard.suit;
   }
 
-  tableNumber = playedCards.reduce((sum, card) => sum + card.number, 0);
+  tableNumber = playedCards.reduce(
+    (sum, card) => sum + card.number,
+    0
+  );
 
   tableNumberOwnerIndex = currentPlayerIndex;
   donNumberActive = true;
 
   playedCards.forEach(card => {
     const index = player.hand.indexOf(card);
-    if (index !== -1) player.hand.splice(index, 1);
+
+    if (index !== -1) {
+      player.hand.splice(index, 1);
+    }
   });
 
   sortHand(player.hand);
 
-  addLog(player.name + " は " + cardsText(playedCards) + " を出した");
+  addLog(
+    player.name +
+    " は " +
+    cardsText(playedCards) +
+    " を出した"
+  );
 
   if (typeof showCardFlyEffect === "function") {
     showCardFlyEffect(cardsText(playedCards));
@@ -378,7 +388,8 @@ function playSelectedCards(selectedSuit) {
   addLog("山札残り：" + deck.length + "枚");
 
   applyEffects(playedCards);
-    selectedCards = [];
+
+  selectedCards = [];
 
   checkDonNotice();
   nextTurn();
@@ -397,7 +408,12 @@ function applyEffects(cards) {
     drawSuit = null;
     drawNumber = 0;
 
-    addLog("Joker ドロー4 累積：" + drawPenalty + "枚");
+    addLog(
+      "Joker ドロー4 累積：" +
+      drawPenalty +
+      "枚"
+    );
+
     return;
   }
 
@@ -408,20 +424,30 @@ function applyEffects(cards) {
 
     applySkipEffect(cards.length);
 
+    // A返し
     if (drawPenalty > 0) {
       drawState = DRAW_STATE.ASKIP;
       drawSuit = first.suit;
       drawNumber = 1;
 
-      addLog("Aスキップ返し：" + cards.length + "枚");
+      addLog(
+        "Aスキップ返し：" +
+        cards.length +
+        "枚"
+      );
+
       return;
     }
 
-    drawState = DRAW_STATE.ASKIP;
-    drawSuit = first.suit;
-    drawNumber = 1;
+    // 通常A
+    resetDrawState();
 
-    addLog("Aスキップ：" + cards.length + "枚");
+    addLog(
+      "Aスキップ：" +
+      cards.length +
+      "枚"
+    );
+
     return;
   }
 
@@ -434,11 +460,19 @@ function applyEffects(cards) {
       direction *= -1;
     }
 
-    addLog("7リバース：" + cards.length + "枚");
+    addLog(
+      "7リバース：" +
+      cards.length +
+      "枚"
+    );
+
     return;
   }
 
-  if (first.number === 2 || first.number === 8) {
+  if (
+    first.number === 2 ||
+    first.number === 8
+  ) {
     if (typeof showDraw2Effect === "function") {
       showDraw2Effect();
     }
@@ -448,16 +482,29 @@ function applyEffects(cards) {
     drawSuit = first.suit;
     drawNumber = first.number;
 
-    addLog(numberText(first.number) + " ドロー2 累積：" + drawPenalty + "枚");
+    addLog(
+      numberText(first.number) +
+      " ドロー2 累積：" +
+      drawPenalty +
+      "枚"
+    );
+
     return;
   }
 
   if (first.number === 11) {
-    if (typeof showMarkChangeEffect === "function") {
+    if (
+      typeof showMarkChangeEffect ===
+      "function"
+    ) {
       showMarkChangeEffect(currentSuit);
     }
 
-    addLog("J マーク指定：" + currentSuit);
+    addLog(
+      "J マーク指定：" +
+      currentSuit
+    );
+
     return;
   }
 
@@ -467,15 +514,23 @@ function applyEffects(cards) {
 }
 
 function applySkipEffect(cardCount) {
-  const advanceBeforeNextTurn = cardCount * 2 - 1;
+  const advanceBeforeNextTurn =
+    cardCount * 2 - 1;
 
-  for (let i = 0; i < advanceBeforeNextTurn; i++) {
+  for (
+    let i = 0;
+    i < advanceBeforeNextTurn;
+    i++
+  ) {
     advanceTurn();
   }
 }
 
 function executeDraw(player) {
-  const count = drawPenalty > 0 ? drawPenalty : 1;
+  const count =
+    drawPenalty > 0
+      ? drawPenalty
+      : 1;
 
   animateDeckDraw(currentPlayerIndex);
 
@@ -485,15 +540,29 @@ function executeDraw(player) {
 
   sortHand(player.hand);
 
-  addLog(player.name + " は" + count + "枚引いた");
-  addLog("山札残り：" + deck.length + "枚");
+  addLog(
+    player.name +
+    " は" +
+    count +
+    "枚引いた"
+  );
+
+  addLog(
+    "山札残り：" +
+    deck.length +
+    "枚"
+  );
 
   if (drawState !== DRAW_STATE.NONE) {
     resetDrawState();
     addLog("ドロー状態解除");
   }
 
-  if (checkHikiDon(currentPlayerIndex)) return;
+  if (
+    checkHikiDon(currentPlayerIndex)
+  ) {
+    return;
+  }
 
   nextTurn();
 }
@@ -502,22 +571,31 @@ function drawCard(player) {
   if (deck.length === 0) {
     deck = [...discardPile];
     discardPile = [];
+
     shuffle(deck);
 
     currentRate *= 2;
 
-    addLog("山札を作り直しました");
-    addLog("レートアップ！ 現在 " + currentRate + "点");
+    addLog(
+      "山札を作り直しました"
+    );
+
+    addLog(
+      "レートアップ！ 現在 " +
+      currentRate +
+      "点"
+    );
   }
 
   if (deck.length === 0) return;
 
   player.hand.push(deck.pop());
+
   sortHand(player.hand);
 }
-
 function animateDeckDraw(playerIndex) {
-  const deckCard = document.getElementById("deck-card");
+  const deckCard =
+    document.getElementById("deck-card");
 
   if (!deckCard) return;
 
@@ -525,27 +603,33 @@ function animateDeckDraw(playerIndex) {
   void deckCard.offsetWidth;
   deckCard.classList.add("deck-bounce");
 
-  const fromRect = deckCard.getBoundingClientRect();
+  const fromRect =
+    deckCard.getBoundingClientRect();
 
   let targetElement = handArea;
 
   if (playerIndex === 1) {
-    targetElement = document.getElementById("cpu1-cards");
+    targetElement =
+      document.getElementById("cpu1-cards");
   }
 
   if (playerIndex === 2) {
-    targetElement = document.getElementById("cpu2-cards");
+    targetElement =
+      document.getElementById("cpu2-cards");
   }
 
   if (playerIndex === 3) {
-    targetElement = document.getElementById("cpu3-cards");
+    targetElement =
+      document.getElementById("cpu3-cards");
   }
 
   if (!targetElement) return;
 
-  const toRect = targetElement.getBoundingClientRect();
+  const toRect =
+    targetElement.getBoundingClientRect();
 
-  const flyCard = document.createElement("div");
+  const flyCard =
+    document.createElement("div");
 
   flyCard.style.position = "fixed";
   flyCard.style.left = fromRect.left + "px";
@@ -556,7 +640,8 @@ function animateDeckDraw(playerIndex) {
   flyCard.style.border = "4px solid #222";
   flyCard.style.background =
     "repeating-linear-gradient(45deg,#1746c8 0,#1746c8 5px,#fff 5px,#fff 8px)";
-  flyCard.style.boxShadow = "0 8px 16px rgba(0,0,0,0.45)";
+  flyCard.style.boxShadow =
+    "0 8px 16px rgba(0,0,0,0.45)";
   flyCard.style.zIndex = "99999";
   flyCard.style.pointerEvents = "none";
   flyCard.style.transition =
@@ -566,12 +651,19 @@ function animateDeckDraw(playerIndex) {
 
   requestAnimationFrame(() => {
     flyCard.style.left =
-      toRect.left + toRect.width / 2 - fromRect.width / 2 + "px";
+      toRect.left +
+      toRect.width / 2 -
+      fromRect.width / 2 +
+      "px";
 
     flyCard.style.top =
-      toRect.top + toRect.height / 2 - fromRect.height / 2 + "px";
+      toRect.top +
+      toRect.height / 2 -
+      fromRect.height / 2 +
+      "px";
 
-    flyCard.style.transform = "scale(.55) rotate(12deg)";
+    flyCard.style.transform =
+      "scale(.55) rotate(12deg)";
     flyCard.style.opacity = "0";
   });
 
@@ -588,7 +680,11 @@ function nextTurn() {
 
 function advanceTurn() {
   currentPlayerIndex =
-    (currentPlayerIndex + direction + players.length) %
+    (
+      currentPlayerIndex +
+      direction +
+      players.length
+    ) %
     players.length;
 }
 
@@ -629,16 +725,11 @@ function cpuAction() {
 function tryDon(playerIndex) {
   clearCpuAutoTimer();
 
-  if (!donNumberActive) return;
-  if (playerIndex === tableNumberOwnerIndex) return;
-
-  const total =
-    getHandTotal(players[playerIndex].hand);
-
-  if (total !== tableNumber) {
+  if (!canPlayerDon(playerIndex)) {
     if (playerIndex === 0) {
       alert("ドン失敗！");
     }
+
     return;
   }
 
@@ -650,13 +741,30 @@ function tryDon(playerIndex) {
     GAME_RULES.DON_MULTIPLIER
   );
 }
+
+function canPlayerDon(playerIndex) {
+  const player = players[playerIndex];
+
+  if (!player) return false;
+  if (!donNumberActive) return false;
+  if (playerIndex === tableNumberOwnerIndex) return false;
+  if (player.hand.length === 0) return false;
+
+  return (
+    getHandTotal(player.hand) === tableNumber
+  );
+}
+
 function checkOpeningDon() {
   if (roundFinished || gameFinished) return;
 
   const openingDonPlayers = [];
 
   players.forEach((player, index) => {
-    if (getHandTotal(player.hand) === tableNumber) {
+    if (
+      player.hand.length > 0 &&
+      getHandTotal(player.hand) === tableNumber
+    ) {
       openingDonPlayers.push(index);
     }
   });
@@ -685,9 +793,7 @@ function getDonPlayers() {
   const donPlayers = [];
 
   players.forEach((player, index) => {
-    if (index === tableNumberOwnerIndex) return;
-
-    if (getHandTotal(player.hand) === tableNumber) {
+    if (canPlayerDon(index)) {
       donPlayers.push(index);
     }
   });
@@ -695,12 +801,16 @@ function getDonPlayers() {
   return donPlayers;
 }
 
-function resolveDonBattle(donPlayers, winType, multiplier) {
+function resolveDonBattle(
+  donPlayers,
+  winType,
+  multiplier
+) {
   clearCpuAutoTimer();
 
   const canCounter =
     tableNumberOwnerIndex !== null &&
-    getHandTotal(players[tableNumberOwnerIndex].hand) === tableNumber;
+    canPlayerDon(tableNumberOwnerIndex);
 
   if (canCounter) {
     finishRound(
@@ -709,6 +819,7 @@ function resolveDonBattle(donPlayers, winType, multiplier) {
       GAME_RULES.DON_COUNTER_MULTIPLIER,
       donPlayers
     );
+
     return;
   }
 
@@ -721,44 +832,40 @@ function resolveDonBattle(donPlayers, winType, multiplier) {
 }
 
 function canCpuDon(playerIndex) {
-  if (!donNumberActive) return false;
-  if (playerIndex === tableNumberOwnerIndex) return false;
-
-  return getHandTotal(players[playerIndex].hand) === tableNumber;
+  return canPlayerDon(playerIndex);
 }
 
 function checkHikiDon(playerIndex) {
-  if (!donNumberActive) return false;
-  if (playerIndex === tableNumberOwnerIndex) return false;
+  if (!canPlayerDon(playerIndex)) return false;
 
-  if (getHandTotal(players[playerIndex].hand) === tableNumber) {
-    const canCounter =
-      tableNumberOwnerIndex !== null &&
-      getHandTotal(players[tableNumberOwnerIndex].hand) === tableNumber;
+  const canCounter =
+    tableNumberOwnerIndex !== null &&
+    canPlayerDon(tableNumberOwnerIndex);
 
-    if (canCounter) {
-      finishRound(
-        [tableNumberOwnerIndex],
-        "引きドン返し",
-        GAME_RULES.HIKI_DON_COUNTER_MULTIPLIER,
-        [playerIndex]
-      );
-    } else {
-      finishRound(
-        [playerIndex],
-        "引きドン",
-        GAME_RULES.HIKI_DON_MULTIPLIER,
-        [tableNumberOwnerIndex]
-      );
-    }
-
-    return true;
+  if (canCounter) {
+    finishRound(
+      [tableNumberOwnerIndex],
+      "引きドン返し",
+      GAME_RULES.HIKI_DON_COUNTER_MULTIPLIER,
+      [playerIndex]
+    );
+  } else {
+    finishRound(
+      [playerIndex],
+      "引きドン",
+      GAME_RULES.HIKI_DON_MULTIPLIER,
+      [tableNumberOwnerIndex]
+    );
   }
 
-  return false;
+  return true;
 }
-
-function finishRound(winnerIndexes, winType, baseMultiplier, payerIndexes) {
+function finishRound(
+  winnerIndexes,
+  winType,
+  baseMultiplier,
+  payerIndexes
+) {
   clearCpuAutoTimer();
 
   roundFinished = true;
@@ -767,28 +874,49 @@ function finishRound(winnerIndexes, winType, baseMultiplier, payerIndexes) {
   showDonEffect(winType);
 
   winnerIndexes.forEach(winnerIndex => {
-    const winner = players[winnerIndex];
+    const winner =
+      players[winnerIndex];
 
-    const totalCards = players.reduce((sum, player, index) => {
-      if (index === winnerIndex) return sum;
-      return sum + player.hand.length;
-    }, 0);
+    const totalCards =
+      players.reduce((sum, player, index) => {
+        if (index === winnerIndex) {
+          return sum;
+        }
 
-    let finalMultiplier = baseMultiplier;
+        return (
+          sum +
+          player.hand.length
+        );
+      }, 0);
+
+    let finalMultiplier =
+      baseMultiplier;
 
     if (winnerIndex === parentIndex) {
-      finalMultiplier *= GAME_RULES.PARENT_BONUS;
-      addLog("親倍率：" + GAME_RULES.PARENT_BONUS + "倍");
+      finalMultiplier *=
+        GAME_RULES.PARENT_BONUS;
+
+      addLog(
+        "親倍率：" +
+        GAME_RULES.PARENT_BONUS +
+        "倍"
+      );
     }
 
     const jokerCount =
-      winner.hand.filter(card => card.type === "joker").length;
+      winner.hand.filter(
+        card => card.type === "joker"
+      ).length;
 
     if (jokerCount > 0) {
       const jokerMultiplier =
-        Math.pow(GAME_RULES.JOKER_MULTIPLIER, jokerCount);
+        Math.pow(
+          GAME_RULES.JOKER_MULTIPLIER,
+          jokerCount
+        );
 
-      finalMultiplier *= jokerMultiplier;
+      finalMultiplier *=
+        jokerMultiplier;
 
       addLog(
         "Joker保持：" +
@@ -800,41 +928,82 @@ function finishRound(winnerIndexes, winType, baseMultiplier, payerIndexes) {
     }
 
     const pay =
-      Math.floor(totalCards * currentRate * finalMultiplier);
-
-    addLog(winner.name + " が " + winType);
-    addLog("基本倍率：" + baseMultiplier + "倍");
-    const deckMultiplier =
-  currentRate / BASE_RATE;
-
-const totalMultiplier =
-  deckMultiplier * finalMultiplier;
-  addLog("山札倍率：" + deckMultiplier + "倍");
-addLog("役倍率：" + finalMultiplier + "倍");
-addLog("合計倍率：" + totalMultiplier + "倍");
-    addLog("残り手札合計：" + totalCards + "枚");
-
-    payerIndexes.forEach(payerIndex => {
-      const payer = players[payerIndex];
-
-      if (!payer) return;
-      if (payerIndex === winnerIndex) return;
-
-      payer.score -= pay;
-      winner.score += pay;
-
-      addLog(
-        payer.name +
-        " → " +
-        winner.name +
-        "：" +
-        pay +
-        "点"
+      Math.floor(
+        totalCards *
+        currentRate *
+        finalMultiplier
       );
-    });
+
+    const deckMultiplier =
+      currentRate / BASE_RATE;
+
+    const totalMultiplier =
+      deckMultiplier *
+      finalMultiplier;
+
+    addLog(
+      winner.name +
+      " が " +
+      winType
+    );
+
+    addLog(
+      "基本倍率：" +
+      baseMultiplier +
+      "倍"
+    );
+
+    addLog(
+      "山札倍率：" +
+      deckMultiplier +
+      "倍"
+    );
+
+    addLog(
+      "役倍率：" +
+      finalMultiplier +
+      "倍"
+    );
+
+    addLog(
+      "合計倍率：" +
+      totalMultiplier +
+      "倍"
+    );
+
+    addLog(
+      "残り手札合計：" +
+      totalCards +
+      "枚"
+    );
+
+    payerIndexes.forEach(
+      payerIndex => {
+        const payer =
+          players[payerIndex];
+
+        if (!payer) return;
+        if (payerIndex === winnerIndex) return;
+
+        payer.score -= pay;
+        winner.score += pay;
+
+        addLog(
+          payer.name +
+          " → " +
+          winner.name +
+          "：" +
+          pay +
+          "点"
+        );
+      }
+    );
 
     resultArea.textContent =
-      winner.name + " の勝利！ +" + pay + "点";
+      winner.name +
+      " の勝利！ +" +
+      pay +
+      "点";
   });
 
   updateAll();
@@ -852,24 +1021,39 @@ function finishGame() {
   gameFinished = true;
 
   const ranking =
-    [...players].sort((a, b) => b.score - a.score);
+    [...players].sort(
+      (a, b) => b.score - a.score
+    );
 
-  let rankingText = "最終順位\n";
+  let rankingText =
+    "最終順位\n";
 
-  ranking.forEach((player, index) => {
-    rankingText +=
-      index + 1 + "位：" + player.name + " " + player.score + "点\n";
-  });
+  ranking.forEach(
+    (player, index) => {
+      rankingText +=
+        index +
+        1 +
+        "位：" +
+        player.name +
+        " " +
+        player.score +
+        "点\n";
+    }
+  );
 
-  resultArea.textContent = rankingText;
+  resultArea.textContent =
+    rankingText;
 
   addLog("ゲーム終了");
 
-  newGameButton.classList.remove("hidden");
+  newGameButton.classList.remove(
+    "hidden"
+  );
 }
 
 function checkDonNotice() {
-  const donPlayers = getDonPlayers();
+  const donPlayers =
+    getDonPlayers();
 
   if (donPlayers.length > 0) {
     addLog(
@@ -889,10 +1073,7 @@ function resetDrawState() {
 }
 
 function canHumanDon() {
-  if (!donNumberActive) return false;
-  if (tableNumberOwnerIndex === 0) return false;
-
-  return getHandTotal(players[0].hand) === tableNumber;
+  return canPlayerDon(0);
 }
 
 function updateAll() {
@@ -903,7 +1084,6 @@ function updateAll() {
   updateTurn();
   updateDonButton();
 }
-
 function updateTable() {
   tableArea.innerHTML = "";
 
@@ -977,7 +1157,9 @@ function updateTable() {
   }
 
   const directionText =
-    direction === 1 ? "正順" : "逆順";
+    direction === 1
+      ? "正順"
+      : "逆順";
 
   suitArea.innerHTML =
     currentRound +
@@ -1063,10 +1245,16 @@ function updateScore() {
     div.className = "score-box";
 
     const parentText =
-      index === parentIndex ? "（親）" : "";
+      index === parentIndex
+        ? "（親）"
+        : "";
 
     div.textContent =
-      player.name + parentText + "：" + player.score + "点";
+      player.name +
+      parentText +
+      "：" +
+      player.score +
+      "点";
 
     scoreArea.appendChild(div);
   });
@@ -1097,7 +1285,11 @@ function updateActiveTurnDisplay() {
   }
 
   const cpuName =
-    document.getElementById("cpu" + currentPlayerIndex + "-name");
+    document.getElementById(
+      "cpu" +
+      currentPlayerIndex +
+      "-name"
+    );
 
   if (cpuName) {
     cpuName.classList.add("active-turn");
@@ -1117,19 +1309,27 @@ function updateTurn() {
     return;
   }
 
-  if (canHumanDon() && currentPlayerIndex !== 0) {
+  if (
+    canHumanDon() &&
+    currentPlayerIndex !== 0
+  ) {
     turnArea.textContent = "ドン可能！";
     return;
   }
 
-  if (autoCpuMode && currentPlayerIndex !== 0) {
+  if (
+    autoCpuMode &&
+    currentPlayerIndex !== 0
+  ) {
     turnArea.textContent =
-      players[currentPlayerIndex].name + " 思考中...";
+      players[currentPlayerIndex].name +
+      " 思考中...";
     return;
   }
 
   turnArea.textContent =
-    "現在：" + players[currentPlayerIndex].name;
+    "現在：" +
+    players[currentPlayerIndex].name;
 }
 
 function updateDonButton() {
@@ -1148,7 +1348,10 @@ function addLog(text) {
 }
 
 function getHandTotal(hand) {
-  return hand.reduce((sum, card) => sum + card.number, 0);
+  return hand.reduce(
+    (sum, card) => sum + card.number,
+    0
+  );
 }
 
 function sortHand(hand) {
@@ -1200,7 +1403,8 @@ function cardHtml(card) {
       ? "red"
       : "black";
 
-  const number = numberText(card.number);
+  const number =
+    numberText(card.number);
 
   if (
     card.number === 11 ||
@@ -1257,7 +1461,10 @@ function numberText(number) {
 function getCardClass(card) {
   if (card.type === "joker") return "card-joker";
 
-  if (card.suit === "♥" || card.suit === "♦") {
+  if (
+    card.suit === "♥" ||
+    card.suit === "♦"
+  ) {
     return "card-red";
   }
 
@@ -1265,7 +1472,11 @@ function getCardClass(card) {
 }
 
 function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i--) {
+  for (
+    let i = array.length - 1;
+    i > 0;
+    i--
+  ) {
     const j =
       Math.floor(Math.random() * (i + 1));
 
