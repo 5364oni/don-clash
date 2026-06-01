@@ -424,7 +424,6 @@ function applyEffects(cards) {
 
     applySkipEffect(cards.length);
 
-    // A返し
     if (drawPenalty > 0) {
       drawState = DRAW_STATE.ASKIP;
       drawSuit = first.suit;
@@ -439,7 +438,6 @@ function applyEffects(cards) {
       return;
     }
 
-    // 通常A
     resetDrawState();
 
     addLog(
@@ -576,10 +574,7 @@ function drawCard(player) {
 
     currentRate *= 2;
 
-    addLog(
-      "山札を作り直しました"
-    );
-
+    addLog("山札を作り直しました");
     addLog(
       "レートアップ！ 現在 " +
       currentRate +
@@ -742,12 +737,30 @@ function tryDon(playerIndex) {
   );
 }
 
+/* 通常ドン用 */
 function canPlayerDon(playerIndex) {
   const player = players[playerIndex];
 
   if (!player) return false;
   if (!donNumberActive) return false;
+  if (tableNumber <= 0) return false;
   if (playerIndex === tableNumberOwnerIndex) return false;
+  if (player.hand.length === 0) return false;
+
+  return (
+    getHandTotal(player.hand) === tableNumber
+  );
+}
+
+/* ドン返し用 */
+function canCounterDon() {
+  if (tableNumberOwnerIndex === null) return false;
+
+  const player = players[tableNumberOwnerIndex];
+
+  if (!player) return false;
+  if (!donNumberActive) return false;
+  if (tableNumber <= 0) return false;
   if (player.hand.length === 0) return false;
 
   return (
@@ -757,6 +770,7 @@ function canPlayerDon(playerIndex) {
 
 function checkOpeningDon() {
   if (roundFinished || gameFinished) return;
+  if (tableNumber <= 0) return;
 
   const openingDonPlayers = [];
 
@@ -808,9 +822,7 @@ function resolveDonBattle(
 ) {
   clearCpuAutoTimer();
 
-  const canCounter =
-    tableNumberOwnerIndex !== null &&
-    canPlayerDon(tableNumberOwnerIndex);
+  const canCounter = canCounterDon();
 
   if (canCounter) {
     finishRound(
@@ -838,9 +850,7 @@ function canCpuDon(playerIndex) {
 function checkHikiDon(playerIndex) {
   if (!canPlayerDon(playerIndex)) return false;
 
-  const canCounter =
-    tableNumberOwnerIndex !== null &&
-    canPlayerDon(tableNumberOwnerIndex);
+  const canCounter = canCounterDon();
 
   if (canCounter) {
     finishRound(
