@@ -368,5 +368,3 @@ function chooseCpuSuit(player) {
 
   return bestSuit;
 }
-  return bestSuit;
-}
