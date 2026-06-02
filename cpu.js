@@ -69,10 +69,10 @@ function cpuActionSafe() {
   }
 
   if (canPlayerDon(currentPlayerIndex)) {
-  addLog(player.name + " がドン！");
-  tryDon(currentPlayerIndex);
-  return;
-}
+    addLog(player.name + " がドン！");
+    tryDon(currentPlayerIndex);
+    return;
+  }
 
   const playableCards = player.hand.filter(card => canPlayCard(card));
 
@@ -332,7 +332,13 @@ function wouldGiveDonChanceByNumber(number) {
   for (let i = 0; i < players.length; i++) {
     if (i === currentPlayerIndex) continue;
 
-    const total = getHandTotal(players[i].hand);
+    const player = players[i];
+
+    if (!player) continue;
+    if (player.hand.length === 0) continue;
+    if (number <= 0) continue;
+
+    const total = getHandTotal(player.hand);
 
     if (total === number) {
       return true;
