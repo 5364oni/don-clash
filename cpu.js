@@ -68,15 +68,11 @@ function cpuActionSafe() {
     return;
   }
 
-  if (
-    donNumberActive &&
-    tableNumberOwnerIndex !== currentPlayerIndex &&
-    getHandTotal(player.hand) === tableNumber
-  ) {
-    addLog(player.name + " がドン！");
-    tryDon(currentPlayerIndex);
-    return;
-  }
+  if (canPlayerDon(currentPlayerIndex)) {
+  addLog(player.name + " がドン！");
+  tryDon(currentPlayerIndex);
+  return;
+}
 
   const playableCards = player.hand.filter(card => canPlayCard(card));
 
@@ -370,5 +366,7 @@ function chooseCpuSuit(player) {
     }
   });
 
+  return bestSuit;
+}
   return bestSuit;
 }
