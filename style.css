@@ -1438,3 +1438,66 @@ h1 {font-family:Georgia,serif;font-size:32px;letter-spacing:.12em;color:#f0d393;
   font-size: clamp(11px, 1.15vw, 15px);
   padding: 7px 9px;
 }
+
+
+/* Ver1.9.6 — smartphone compact game layout. Desktop rules untouched. */
+@media (max-width: 768px) {
+  *, *::before, *::after { box-sizing: border-box; }
+  #game-area { min-height: 0; padding-bottom: max(8px, env(safe-area-inset-bottom)); }
+  h1 { font-size: 20px !important; margin: 3px 0 !important; }
+  hr { margin: 4px auto !important; }
+  #score-area { margin: 3px auto !important; gap: 3px !important; }
+  .score-box { padding: 3px 5px !important; font-size: 10px !important; }
+  #setting-area { margin: 2px auto !important; }
+  #cpu-level-area, #auto-cpu-area { padding: 3px 5px !important; }
+  #role-area { width: 96% !important; padding: 2px 6px !important; margin: 3px auto !important; }
+  #role-area summary { cursor: pointer; font-size: 12px; font-weight: bold; color: #f0d393; }
+  #role-area .role-list { margin-top: 4px; }
+  #role-area:not([open]) .role-list { display: none !important; }
+  #turn-area { font-size: 14px !important; margin: 3px auto !important; }
+  #table-center { height: clamp(205px, 30dvh, 275px) !important; margin: 0 !important; }
+  #table-center::before { inset: 9% 3% 7% !important; border-width: 6px !important; }
+  .cpu-seat { gap: 3px !important; }
+  #cpu-top { top: 0 !important; }
+  #cpu-left { left: 2px !important; top: 48% !important; }
+  #cpu-right { right: 2px !important; top: 48% !important; }
+  .cpu-name, .cpu-name.has-personality {
+    font-size: 10px !important; padding: 3px 4px !important;
+    max-width: 120px; white-space: nowrap;
+  }
+  .cpu-back-card { width: 24px !important; height: 34px !important; border-width: 1px !important; }
+  .cpu-top-cards .cpu-back-card { margin-left: -15px !important; }
+  .cpu-left-cards .cpu-back-card, .cpu-right-cards .cpu-back-card { margin-top: -24px !important; }
+  #table-area { top: 53% !important; }
+  #table-zone { gap: 8px !important; }
+  #deck-zone { width: 65px !important; }
+  #deck-card { width: 47px !important; height: 68px !important; margin-bottom: 3px !important; }
+  #deck-count { font-size: 11px !important; white-space: nowrap; }
+  #table-stack { width: 86px !important; height: 100px !important; }
+  .table-card { width: 58px !important; height: 84px !important; border-width: 2px !important; border-radius: 6px !important; }
+  .table-play-count { bottom: -13px !important; font-size: 10px !important; padding: 1px 5px !important; }
+  .table-fan-card { transform: translate(calc(-50% + var(--fan-x) * .48), calc(-50% + var(--fan-y) * .5)) rotate(var(--fan-angle)) !important; }
+  #player-area { margin-top: 0 !important; padding: 5px 0 9px !important; border-radius: 15px 15px 0 0; }
+  #number-area { font-size: 19px !important; margin: 1px auto !important; }
+  #suit-area { font-size: 10px !important; padding: 4px !important; margin: 2px auto !important; }
+  #hand { margin: 3px auto !important; padding: 5px 0 5px 8px !important; min-height: 0 !important; }
+  #hand .hand-card-button { width: 57px !important; min-width: 57px !important; height: 82px !important; margin-left: -13px !important; }
+  #hand .hand-card-button .card-corner { font-size: 12px !important; }
+  #hand .hand-card-button .card-center-symbol, #hand .hand-card-button .card-center { font-size: 36px !important; }
+  #hand .hand-card-button .face-icon { font-size: 26px !important; }
+  #button-area { flex-wrap: nowrap !important; gap: 5px !important; padding: 0 5px; }
+  #button-area button { flex: 1 1 0; min-width: 0 !important; padding: 8px 2px !important; font-size: 13px !important; min-height: 39px !important; }
+  #log-area { margin-top: 8px !important; }
+  .real-card-fly { width: 58px !important; height: 84px !important; }
+}
+@media (max-width: 390px) {
+  #table-center::before { inset: 9% 1% 7% !important; }
+  .cpu-name, .cpu-name.has-personality { font-size: 9px !important; max-width: 106px; }
+  #table-zone { gap: 4px !important; }
+}
+@media (max-width: 768px) and (max-height: 740px) {
+  #table-center { height: 195px !important; }
+  #role-area { margin: 1px auto !important; }
+  #hand .hand-card-button { height: 72px !important; width: 51px !important; min-width: 51px !important; }
+  #button-area button { min-height: 36px !important; }
+}

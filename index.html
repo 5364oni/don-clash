@@ -10,7 +10,7 @@
 
   <title>ドンクラッシュ</title>
 
-  <link rel="stylesheet" href="style.css?v=195" />
+  <link rel="stylesheet" href="style.css?v=196" />
 </head>
 
 <body>
@@ -62,9 +62,9 @@
     </div>
 
     <!-- 役 -->
-    <div id="role-area">
+    <details id="role-area" open>
 
-      <h2>役札</h2>
+      <summary>役札・ルールを表示</summary>
 
       <div class="role-list">
 
@@ -94,7 +94,7 @@
 
       </div>
 
-    </div>
+    </details>
 
     <!-- 現在 -->
     <div id="turn-area"></div>
@@ -266,5 +266,14 @@
 <script src="game-don.js?v=17"></script>
 <script src="game-ui.js?v=193"></script>
 <script src="game-init.js?v=17"></script>
+<script>
+  // Ver1.9.6: 小画面では役札の説明を折りたたみ、対戦領域を優先。
+  (function () {
+    const roles = document.getElementById("role-area");
+    if (roles && window.matchMedia("(max-width: 768px)").matches) {
+      roles.removeAttribute("open");
+    }
+  })();
+</script>
 </body>
 </html>
