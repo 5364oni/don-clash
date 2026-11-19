@@ -10,7 +10,7 @@
 
   <title>ドンクラッシュ</title>
 
-  <link rel="stylesheet" href="style.css?v=196" />
+  <link rel="stylesheet" href="style.css?v=1961" />
 </head>
 
 <body>
@@ -244,15 +244,13 @@
     </div>
 
     <!-- ログ -->
-    <div id="log-area">
+    <details id="log-area" open>
 
-      <h2>
-        ログ
-      </h2>
+      <summary>ログを表示</summary>
 
       <div id="log"></div>
 
-    </div>
+    </details>
 
   </div>
 
@@ -270,8 +268,10 @@
   // Ver1.9.6: 小画面では役札の説明を折りたたみ、対戦領域を優先。
   (function () {
     const roles = document.getElementById("role-area");
+    const logs = document.getElementById("log-area");
     if (roles && window.matchMedia("(max-width: 768px)").matches) {
       roles.removeAttribute("open");
+      if (logs) logs.removeAttribute("open");
     }
   })();
 </script>

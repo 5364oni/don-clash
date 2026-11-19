@@ -1501,3 +1501,43 @@ h1 {font-family:Georgia,serif;font-size:32px;letter-spacing:.12em;color:#f0d393;
   #hand .hand-card-button { height: 72px !important; width: 51px !important; min-width: 51px !important; }
   #button-area button { min-height: 36px !important; }
 }
+
+/* Ver1.9.6a: J選択4列固定 / CPU名位置 / ログ折りたたみ */
+#log-area summary { cursor:pointer; text-align:center; font-weight:bold; padding:5px; }
+#log-area[open] summary { margin-bottom:5px; }
+@media (max-width:768px) {
+  #cpu-left .cpu-name, #cpu-right .cpu-name {
+    position:absolute !important;
+    bottom:calc(100% + 4px) !important;
+    left:50% !important;
+    transform:translateX(-50%) !important;
+    max-width:44vw !important;
+    white-space:nowrap !important;
+    z-index:4;
+  }
+  #cpu-left, #cpu-right { top:55% !important; }
+  #cpu-left .cpu-cards, #cpu-right .cpu-cards { margin-top:5px !important; }
+  #suit-select {
+    display:grid !important;
+    grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+    column-gap:6px !important;
+    row-gap:10px !important;
+    width:min(94vw,390px) !important;
+    max-width:94vw !important;
+    padding:14px 10px !important;
+    box-sizing:border-box !important;
+  }
+  #suit-select.hidden { display:none !important; }
+  #suit-select h2 { grid-column:1/-1 !important; font-size:20px !important; margin:0 0 3px !important; }
+  #suit-select button {
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    height:clamp(48px,16vw,64px) !important;
+    margin:0 !important;
+    font-size:clamp(28px,9vw,38px) !important;
+    padding:0 !important;
+  }
+  #log-area { margin:3px auto !important; }
+  #log-area summary { font-size:13px !important; }
+}
