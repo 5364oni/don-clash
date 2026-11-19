@@ -177,9 +177,9 @@ function showJokerEntrance() {
   overlay.setAttribute("aria-hidden", "true");
   overlay.innerHTML = `
     <div class="joker-lightning-layer">
-      <svg class="joker-bolt joker-bolt-left" viewBox="0 0 160 340" aria-hidden="true"><path d="M120 2 L78 81 L112 107 L47 180 L81 198 L20 332"/></svg>
-      <svg class="joker-bolt joker-bolt-right" viewBox="0 0 160 340" aria-hidden="true"><path d="M37 2 L84 72 L52 111 L115 177 L79 217 L144 334"/></svg>
-      <svg class="joker-bolt joker-bolt-top" viewBox="0 0 260 140" aria-hidden="true"><path d="M4 15 L72 43 L99 19 L154 87 L187 61 L256 124"/></svg>
+      <svg class="joker-bolt joker-bolt-left" viewBox="0 0 160 340" aria-hidden="true"><path d="M120 2 L78 81 L112 107 L47 180 L81 198 L20 332"/><path class="joker-branch" d="M78 81 L24 109 L51 139 M47 180 L8 211 L34 244 M81 198 L135 238 L101 272"/></svg>
+      <svg class="joker-bolt joker-bolt-right" viewBox="0 0 160 340" aria-hidden="true"><path d="M37 2 L84 72 L52 111 L115 177 L79 217 L144 334"/><path class="joker-branch" d="M84 72 L137 99 L112 134 M115 177 L151 206 L129 249 M79 217 L23 251 L55 286"/></svg>
+      <svg class="joker-bolt joker-bolt-top" viewBox="0 0 260 140" aria-hidden="true"><path d="M4 15 L72 43 L99 19 L154 87 L187 61 L256 124"/><path class="joker-branch" d="M72 43 L51 91 L24 101 M154 87 L135 124 L111 134 M187 61 L225 18 L246 9"/></svg>
       <div class="joker-electric-sparks" aria-hidden="true"></div>
     </div>
     <div class="joker-entrance-stage">
