@@ -26,3 +26,5 @@ Ver1.9.14g：ZIPを展開して既存ファイルを上書き。GitHub Pagesで�
 Ver1.9.14h: ZIP全体を展開して上書き。GitHub公開時はassets内のjoker-*-1914h.webpもアップロード。
 
 Ver1.9.14i：ZIPの中身をすべてGitHubへ上書き。style.cssとindex.htmlを必ず更新。公開後はページを再読み込みしてジョーカー3種類を確認。
+
+Ver1.9.15: ZIP展開後、全ファイルを同じ構成でGitHubに上書き。特にindex.html、game-ui.js、style.cssを更新。新絵札36枚はassets内にも保存。

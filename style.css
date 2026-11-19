@@ -1747,3 +1747,10 @@ body.welcome-active{overflow:hidden}
 
 /* Ver1.9.14i: portrait framing for illustrated Joker cards; embedded art prevents stale asset URL loads. */
 .joker-card::after { background-size:100% 100%; background-position:center; }
+
+/* Ver1.9.15: themed court card faces; joker and ordinary cards unchanged */
+.court-theme-art{display:none;width:100%;height:100%;object-fit:fill;pointer-events:none;user-select:none}
+:root:not([data-card-theme="pop"]):not([data-card-theme="dark"]) .court-basic{display:block}
+:root[data-card-theme="basic"] .court-basic{display:block}
+:root[data-card-theme="pop"] .court-pop{display:block}
+:root[data-card-theme="dark"] .court-dark{display:block}
