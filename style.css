@@ -1694,3 +1694,40 @@ body.welcome-active{overflow:hidden}
 :root[data-card-theme="dark"] h1{color:#e9c77e;text-shadow:2px 2px 0 #000}
 :root[data-card-theme="pop"] .joker-card{background:#fff1f8;color:#e94e9b}
 :root[data-card-theme="dark"] .joker-card{background:#111722;color:#e9c77e}
+
+/* Ver1.9.14g: Joker readability only. Keep star clear of both labels. */
+.joker-card .joker-top,
+.joker-card .joker-bottom {
+  writing-mode: horizontal-tb;
+  transform: none;
+  left: 50%;
+  right: auto;
+  width: max-content;
+  max-width: 88%;
+  text-align: center;
+  translate: -50% 0;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: 1.2px;
+  text-shadow: 0 1px 2px rgba(0,0,0,.3);
+  z-index: 4;
+}
+.joker-card .joker-top { top: 10px; bottom: auto; }
+.joker-card .joker-bottom { top: auto; bottom: 10px; }
+.joker-card .joker-star,
+.table-card .joker-star,
+#hand .hand-card-button .joker-star {
+  font-size: 39px !important;
+  transform: none;
+  text-shadow: 0 1px 2px rgba(0,0,0,.18);
+  z-index: 2;
+}
+.table-card .joker-star { font-size: 45px !important; }
+@media(max-width:768px) {
+  .joker-card .joker-top, .joker-card .joker-bottom { font-size: 10px; letter-spacing: .5px; }
+  .joker-card .joker-top { top: 8px; }
+  .joker-card .joker-bottom { bottom: 8px; }
+  .joker-card .joker-star, .table-card .joker-star,
+  #hand .hand-card-button .joker-star { font-size: 34px !important; }
+}

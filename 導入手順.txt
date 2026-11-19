@@ -20,3 +20,5 @@ Ver1.9.14c：GitHub Pages公開時はZIPを展開し、全ファイル（assets�
 Ver1.9.14e：GitHubにはZIPの中身をすべて上書きし、iPhone Safariではページ再読み込み後に確認してください。
 
 Ver1.9.14f: ZIP展開後、フォルダ構成を維持してGitHubへ全ファイル上書き。公開URLを開き直してポップ・ダークのマークを確認。
+
+Ver1.9.14g：ZIPを展開して既存ファイルを上書き。GitHub Pagesではindex.htmlとstyle.cssを必ず更新。
