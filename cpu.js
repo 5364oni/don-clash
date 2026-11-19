@@ -16,39 +16,44 @@ function cpuPersonalityId(player) {
 }
 
 // Only the current CPU's hand and public state are used for personality scoring.
+// Ver1.9.8: personality and difficulty are combined without inspecting hidden hands.
 function scorePersonalityCard(player, card) {
   const kind = cpuPersonalityId(player);
-  const isJoker = card.type === "joker";
-  const attack = isJoker || card.number === 2 || card.number === 8;
+  const remaining = player.hand.filter(c => c !== card);
+  const opponents = players.filter((p, i) => i !== currentPlayerIndex && p.hand.length > 0);
+  const urgent = opponents.some(p => p.hand.length <= 2);
+  const attack = card.type === "joker" || card.number === 2 || card.number === 8;
   const control = card.number === 1 || card.number === 7 || card.number === 11;
-  const enemyLow = players.some((p, i) => i !== currentPlayerIndex && p.hand.length <= 2);
-  const lastCards = player.hand.length <= 2;
-  let score = card.number * 0.4;
+  const matchingSuit = remaining.filter(c => c.suit === card.suit).length;
+  const matchingNumber = remaining.filter(c => c.number === card.number).length;
+  const finish = remaining.length === 0;
+  let score = card.number * 0.45 + (finish ? 100 : 0);
+
+  // Saving Joker generally has value, but the urgency and personality differ.
+  if (card.type === "joker" && !finish) score -= 10;
   if (kind === "attack") {
-    score += attack ? (enemyLow ? 24 : 15) : 0;
-    score += control && enemyLow ? 6 : 0;
+    score += attack ? (urgent ? 23 : 15) : 0;
+    score += control && urgent ? 7 : 0;
   } else if (kind === "cautious") {
-    score += attack ? (enemyLow ? 3 : -13) : 0;
-    score += control ? (enemyLow ? 2 : -7) : 0;
-    score += isJoker && !lastCards ? -12 : 0;
+    score += matchingSuit * 3;
+    score += attack ? (urgent ? 6 : -9) : 0;
+    score += control ? (urgent ? 4 : -4) : 0;
+    if (card.type === "joker" && !urgent) score -= 10;
   } else if (kind === "calculated") {
-    // The value of this CPU's remaining hand, not opponents' hidden cards.
-    const remaining = player.hand.filter(c => c !== card);
-    const matching = remaining.filter(c => c.suit === card.suit).length;
-    score += matching * 2.5;
-    score += attack && enemyLow ? 9 : 0;
-    score += isJoker && !lastCards ? -7 : 0;
-    score += remaining.length === 0 ? 30 : 0;
+    score += matchingSuit * 4 + matchingNumber * 3;
+    score += attack && urgent ? 12 : 0;
+    if (card.type === "joker" && !urgent) score -= 7;
   } else if (kind === "speed") {
-    const same = player.hand.filter(c => c.number === card.number).length;
-    score += same * 8;
-    score += isJoker ? 2 : 0;
+    score += matchingNumber * 10;
+    score += attack ? 5 : 0;
   } else if (kind === "tricky") {
-    score += (attack || control) ? 7 : 0;
-    score += Math.random() * 17;
+    score += (attack || control) ? 10 : 0;
+    score += Math.random() * 14;
   }
-  if (lastCards && (attack || control)) score += 12;
-  if (drawPenalty > 0 && attack) score += 18;
+  if (player.hand.length <= 2 && (attack || control)) score += 10;
+  if (drawPenalty > 0 && attack) score += 14;
+  // Hard CPUs avoid publicly estimated DON risk; not an exact prediction.
+  if (cpuLevel === "hard" && wouldGiveDonChanceByNumber(card.number)) score -= 11;
   return score;
 }
 
@@ -56,11 +61,12 @@ function choosePersonalityCpuCard(player, playableCards) {
   if (!playableCards.length) return null;
   const scored = playableCards.map(card => ({ card, score: scorePersonalityCard(player, card) }));
   scored.sort((a, b) => b.score - a.score);
-  // Difficulty still matters: easy makes more mistakes, hard is more consistent.
-  if (cpuLevel === "easy" && Math.random() < 0.35) {
-    return scored[Math.floor(Math.random() * scored.length)].card;
+  if (cpuLevel === "easy") {
+    // Easy makes noticeably more imperfect choices.
+    if (Math.random() < 0.48) return scored[Math.floor(Math.random() * scored.length)].card;
+    return scored[0].card;
   }
-  if (cpuLevel === "normal" && scored.length > 1 && Math.random() < 0.18) {
+  if (cpuLevel === "normal" && scored.length > 1 && Math.random() < 0.23) {
     return scored[Math.floor(Math.random() * Math.min(3, scored.length))].card;
   }
   return scored[0].card;
@@ -414,24 +420,22 @@ function chooseHardMultiCards(selectedCard, sameNumberCards) {
   return bestCards;
 }
 
+// Ver1.9.7: CPU decision-making must not inspect opponents' hidden cards.
+// Hand counts are public; card values and hand totals are not.
+// This is a conservative estimate, not an exact DON prediction.
 function wouldGiveDonChanceByNumber(number) {
-  for (let i = 0; i < players.length; i++) {
-    if (i === currentPlayerIndex) continue;
+  if (number <= 0) return false;
 
-    const player = players[i];
-
-    if (!player) continue;
-    if (player.hand.length === 0) continue;
-    if (number <= 0) continue;
-
-    const total = getHandTotal(player.hand);
-
-    if (total === number) {
-      return true;
-    }
-  }
-
-  return false;
+  // An unknown hand has roughly 7 points per card (Joker is 0).
+  // Allow a broad range to avoid treating a guess as certainty.
+  return players.some((opponent, index) => {
+    if (index === currentPlayerIndex || !opponent) return false;
+    const count = opponent.hand.length; // public hand count only
+    if (count === 0) return false;
+    const expected = count * 6.8;
+    const tolerance = Math.max(3, Math.sqrt(count) * 4.5);
+    return Math.abs(number - expected) <= tolerance;
+  });
 }
 
 function chooseCpuSuit(player) {

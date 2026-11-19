@@ -373,14 +373,15 @@ function cardHtml(card) {
   // Ver1.8.4: Traditional CC0 English-pattern court cards from Wikimedia Commons.
   // Network-based image with offline fallback to the bundled Ver1.8.3 artwork.
   const localArt = `assets/${suitCode}${card.number}.png`;
+  const themedArt = `<img class="theme-card-art theme-pop-art" src="assets/card-pop-${suitCode}${card.number}.svg" alt="" draggable="false"><img class="theme-card-art theme-dark-art" src="assets/card-dark-${suitCode}${card.number}.svg" alt="" draggable="false">`;
   if (card.number >= 11 && card.number <= 13) {
     const rank = {11:"jack",12:"queen",13:"king"}[card.number];
     const suitName = {"♠":"spades","♥":"hearts","♦":"diamonds","♣":"clubs"}[card.suit];
     const imageName = `English_pattern_${rank}_of_${suitName}.svg`;
     const remoteArt = `https://commons.wikimedia.org/wiki/Special:FilePath/${imageName}`;
-    return `<div class="playing-card classic-card"><img class="classic-card-art" src="${remoteArt}" onerror="this.onerror=null;this.src='${localArt}'" alt="${numberText(card.number)}${card.suit}" draggable="false"></div>`;
+    return `<div class="playing-card classic-card"><img class="classic-card-art" src="${remoteArt}" onerror="this.onerror=null;this.src='${localArt}'" alt="${numberText(card.number)}${card.suit}" draggable="false">${themedArt}</div>`;
   }
-  return `<div class="playing-card classic-card"><img class="classic-card-art" src="${localArt}" alt="${numberText(card.number)}${card.suit}" draggable="false"></div>`;
+  return `<div class="playing-card classic-card"><img class="classic-card-art" src="${localArt}" alt="${numberText(card.number)}${card.suit}" draggable="false">${themedArt}</div>`;
 }
 
 function numberText(number) {

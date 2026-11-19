@@ -3,7 +3,7 @@ function tryDon(playerIndex) {
 
   if (!canPlayerDon(playerIndex)) {
     if (playerIndex === 0) {
-      alert("ドン失敗！");
+      if (typeof showPlayNotice === "function") showPlayNotice("ドンは、場の数字と手札の数字合計が一致するときに宣言できます。");
     }
 
     return;

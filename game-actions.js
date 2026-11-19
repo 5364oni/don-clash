@@ -25,7 +25,9 @@ function applyEffects(cards) {
       showSkipEffect();
     }
 
-    applySkipEffect(cards.length);
+    if (drawPenalty > 0) {
+      applySkipEffect(cards.length);
+    }
 
     if (drawPenalty > 0) {
       drawState = DRAW_STATE.ASKIP;
@@ -42,6 +44,7 @@ function applyEffects(cards) {
     }
 
     resetDrawState();
+    normalSkipPending = { suit: first.suit, count: cards.length };
 
     addLog(
       "Aスキップ：" +
@@ -191,7 +194,11 @@ function drawCard(player) {
 
     shuffle(deck);
 
+    const previousRate = currentRate;
     currentRate *= 2;
+    if (typeof showDeckReshuffleEffect === "function") {
+      showDeckReshuffleEffect(previousRate, currentRate);
+    }
 
     addLog("山札を作り直しました");
     addLog(
@@ -331,3 +338,35 @@ function cpuAction() {
   }
 }
 
+
+// 通常時A: 対象者は同じマークのAでスキップ返し可能。
+// 返さない場合は対象者の手番を飛ばす。ドロー中の従来仕様は維持。
+function resolveNormalSkip() {
+  if (!normalSkipPending) return false;
+  const pending = normalSkipPending;
+  normalSkipPending = null;
+  // 複数枚のAは従来の飛ばし数を維持（先頭対象者のみ返し判定）。
+  const targetIndex = (currentPlayerIndex + direction + players.length) % players.length;
+  const target = players[targetIndex];
+  const matchingA = target.hand.find(c => c.type !== "joker" && c.number === 1 && c.suit === pending.suit);
+  let counter = false;
+  if (matchingA) {
+    if (target.isCPU) {
+      counter = true;
+    } else {
+      counter = window.confirm("Aスキップを受けました！\n同じマークのAでスキップ返しできます。\n\nOK：Aを出して返す\nキャンセル：スキップされる");
+    }
+  }
+  if (counter) {
+    addLog(target.name + " がAでスキップ返し！");
+    currentPlayerIndex = targetIndex;
+    selectedCards = [matchingA];
+    playSelectedCards(null);
+    return true;
+  }
+  // 通常のA複数枚は従来の進行と同じ（2*枚数先へ）。
+  for (let i = 0; i < pending.count * 2; i++) advanceTurn();
+  updateAll();
+  runAutoCpuIfNeeded();
+  return true;
+}

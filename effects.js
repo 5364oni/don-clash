@@ -11,22 +11,38 @@ function getEffectArea() {
   return effect;
 }
 
-function showBigEffect(text, effectClass) {
+// Ver1.9.13: 役札演出は順番に表示し、短時間の連続発動でも上書きされない。
+const SPECIAL_EFFECT_MS = 1450;
+let specialEffectQueue = [];
+let specialEffectActive = false;
+let specialEffectTimer = null;
+function playNextSpecialEffect() {
+  if (specialEffectActive || specialEffectQueue.length === 0) return;
+  specialEffectActive = true;
+  const item = specialEffectQueue.shift();
   const effect = getEffectArea();
-
-  effect.className = "";
-  effect.classList.add(effectClass);
-
-  effect.textContent = text;
+  effect.className = item.effectClass;
+  effect.textContent = item.text;
   effect.style.animation = "none";
-
   void effect.offsetWidth;
-
-  effect.style.animation = "donPop 0.9s ease-out forwards";
-
-  setTimeout(() => {
+  effect.style.animation = `donPop ${item.duration}ms ease-out forwards`;
+  specialEffectTimer = setTimeout(() => {
     effect.className = "hidden";
-  }, 900);
+    specialEffectActive = false;
+    specialEffectTimer = null;
+    playNextSpecialEffect();
+  }, item.duration);
+}
+function showBigEffect(text, effectClass, duration = SPECIAL_EFFECT_MS) {
+  // DON系は決着を優先。通常役札の待機演出は取り消す。
+  if (effectClass && /^(effect-don|effect-counter|effect-draw-don|effect-draw-counter)$/.test(effectClass)) {
+    specialEffectQueue.length = 0;
+    if (specialEffectTimer !== null) clearTimeout(specialEffectTimer);
+    specialEffectActive = false;
+    specialEffectTimer = null;
+  }
+  specialEffectQueue.push({ text, effectClass, duration });
+  playNextSpecialEffect();
 }
 
 function showSkipFlowEffect() {
@@ -43,7 +59,7 @@ function showSkipFlowEffect() {
   setTimeout(() => {
     skip.remove();
     wind.remove();
-  }, 1500);
+  }, 1650);
 }
 
 function addTempClass(element, className, duration) {
@@ -118,7 +134,7 @@ function showSuitBurst(suit) {
 
   setTimeout(() => {
     burst.remove();
-  }, 900);
+  }, 1400);
 }
 
 function showDonEffect(text) {
@@ -151,15 +167,16 @@ function showDonEffect(text) {
 function showJokerEffect() {
   flashScreen("flash-joker", 650);
   shakeScreen();
-  showBigEffect("JOKER!!", "effect-joker");
+  showBigEffect("JOKER!!  +4", "effect-joker");
 }
 
 function showSkipEffect() {
+  showBigEffect("SKIP!!", "effect-skip");
   showSkipFlowEffect();
 }
 
 function showDraw2Effect() {
-  showBigEffect("DRAW 2!!", "effect-draw2");
+  showBigEffect("DRAW +2!!", "effect-draw2");
   bounceDeck(2);
 }
 
@@ -169,11 +186,9 @@ function showReverseEffect() {
 }
 
 function showMarkChangeEffect(suit) {
-  showBigEffect("MARK CHANGE!!", "effect-mark");
-
-  if (suit) {
-    showSuitBurst(suit);
-  }
+  const names = {"♠":"スペード", "♥":"ハート", "♦":"ダイヤ", "♣":"クラブ"};
+  showBigEffect(`J マーク指定：${suit} ${names[suit] || ""}`, "effect-mark", 2100);
+  if (suit) showSuitBurst(suit);
 }
 
 function showCardFlyEffect(cards, playerIndex) {
@@ -235,4 +250,35 @@ function showCardPreviewEffect(card) {
       preview.remove();
     }, 300);
   }, 700);
+}
+// Ver1.9.9: 独立した山札再構築アナウンス。ドン演出とは別レイヤー。
+let deckReshuffleNoticeTimer = null;
+function showDeckReshuffleEffect(previousRate, newRate) {
+  let notice = document.getElementById("deck-reshuffle-notice");
+  if (!notice) {
+    notice = document.createElement("div");
+    notice.id = "deck-reshuffle-notice";
+    notice.setAttribute("role", "status");
+    notice.setAttribute("aria-live", "polite");
+    document.body.appendChild(notice);
+  }
+  if (deckReshuffleNoticeTimer !== null) clearTimeout(deckReshuffleNoticeTimer);
+  notice.replaceChildren();
+  const heading = document.createElement("strong");
+  heading.textContent = "山札を再構築！";
+  const subtitle = document.createElement("span");
+  subtitle.textContent = "カードをシャッフル";
+  const rate = document.createElement("b");
+  rate.textContent = `レート ${previousRate}点 → ${newRate}点`;
+  const double = document.createElement("span");
+  double.textContent = "レート2倍！";
+  double.className = "deck-reshuffle-double";
+  notice.append(heading, subtitle, rate, double);
+  notice.classList.remove("deck-reshuffle-show");
+  void notice.offsetWidth;
+  notice.classList.add("deck-reshuffle-show");
+  deckReshuffleNoticeTimer = setTimeout(() => {
+    notice.classList.remove("deck-reshuffle-show");
+    deckReshuffleNoticeTimer = null;
+  }, 1900);
 }

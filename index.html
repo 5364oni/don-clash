@@ -10,10 +10,63 @@
 
   <title>ドンクラッシュ</title>
 
-  <link rel="stylesheet" href="style.css?v=196b1" />
+  <link rel="stylesheet" href="style.css?v=1914" />
 </head>
 
 <body>
+
+  <!-- Ver1.9.10: 初心者向けスタートガイド。ゲーム盤面を隠さず重ねて表示する。 -->
+  <section id="welcome-overlay" class="welcome-overlay" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
+    <div class="welcome-panel">
+      <div class="welcome-kicker">HOW TO PLAY</div>
+      <h2 id="welcome-title">ドンクラッシュへようこそ！</h2>
+      <p class="welcome-lead">数字とマークをつなぎながら、<strong>「ドン！」</strong>を狙う4人対戦カードゲーム。</p>
+      <div class="welcome-guide" id="guide-basic" role="tabpanel" aria-labelledby="guide-tab-basic">
+        <section><h3>① 基本の出し方</h3><p>場札と<strong>同じマーク、または同じ数字</strong>のカードを出そう。同じ数字なら複数枚まとめて出せるよ。特殊カードには追加効果もある。</p></section>
+        <section><h3>② 手番の進め方</h3><p>自分の番にカードを選んで「出す」。出せないときは山札から「引く」。CPUの番は「次へ」、または「CPU自動進行」で進めよう。<strong>自分の番以外もドンのチャンス！</strong></p></section>
+        <section><h3>③ ドンの成立条件</h3><p><strong>場札の数字と、自分の手札の数字合計が一致</strong>したら「ドン！」を宣言できる。手番に関係なく狙えるぞ。場札を出した本人が同じ条件を満たした場合は「ドン返し」が優先される。</p></section>
+        <section><h3>④ ラウンドの決着（上がり方）</h3><p><strong>ドン成立でラウンド決着！</strong> 山札から引いた直後の「引きドン」や、開始直後の「開幕ドン」もある。<strong>手札を0枚にするだけではラウンドは終了しない</strong>ので、ドンのタイミングを狙おう。</p></section>
+        <section class="welcome-guide-wide"><h3>⑤ 得点と最終勝者</h3><p><strong>4ラウンドの合計得点</strong>で勝負！ 勝者以外の残り手札枚数 × 現在レート × 役・親・ジョーカー倍率が精算の基準。支払う相手はドンの種類で変わる。<strong>山札が再構築されるとレートは2倍</strong>になるよ。</p></section>
+      </div>
+      <div class="guide-tabs" role="tablist" aria-label="ルールの種類">
+        <button type="button" id="guide-tab-basic" class="guide-tab active" role="tab" aria-selected="true" aria-controls="guide-basic">概要</button>
+        <button type="button" id="guide-tab-detail" class="guide-tab" role="tab" aria-selected="false" aria-controls="guide-detail">特殊カード・詳細ルール</button>
+      </div>
+      <section id="guide-detail" class="guide-detail" role="tabpanel" aria-labelledby="guide-tab-detail" hidden>
+        <h3>まず覚えよう：特殊カードの効果</h3>
+        <p class="guide-intro">通常のカードと同じように出せる条件を確認してから使おう。ドローが発動している間は、下の「返せるカード」のルールが優先されるよ。</p>
+        <div class="guide-rule-grid">
+          <article><strong>A｜スキップ</strong><p>次の人の番を飛ばす。複数枚まとめて出した場合は、その枚数分スキップ。ドロー中に返せるときも、たまったドロー枚数は消えない。</p></article>
+          <article><strong>2・8｜ドロー2</strong><p>次の対象者に「2枚引く」効果を追加する。2枚出せば4枚分。返し札が続くと、引く枚数が積み重なる。</p></article>
+          <article><strong>7｜リバース</strong><p>順番の進む向きを逆にする。2枚まとめて出せば2回反転して元の向き。ドロー中でも、たまった枚数を残したまま向きが変わる。</p></article>
+          <article><strong>J｜マーク指定</strong><p>次に出すカードのマークを指定できる。ただし、ドロー効果が続いている間は返し札として使えない。</p></article>
+          <article><strong>Joker｜ドロー4</strong><p>ドローを4枚分追加する。ドンの数字合計では「0」として数える。</p></article>
+        </div>
+        <h3>ドローが始まったら？</h3>
+        <p>ドローを受ける人は、条件に合う特殊カードで<strong>返す</strong>か、返せなければ<strong>たまった枚数を引く</strong>。Aや7で返しても、ドロー枚数は0にならないよ。</p>
+        <div class="guide-example">
+          <strong>例：♠2 → ♠7（リバース）</strong>
+          <p>♠2で「2枚ドロー」が発動。次の人が♠7を出すと、<strong>進行方向だけが逆転</strong>し、2枚ドローは残る。</p>
+          <p>逆方向で次に対象になった人は、<strong>♠A・♠2・♠7・♠8、またはJoker</strong>で返せる。返せなければ累積の2枚を引く。</p>
+        </div>
+        <h3>状況別：何で返せる？</h3>
+        <div class="guide-table-wrap"><table class="guide-rule-table"><thead><tr><th>直前の返し札・状態</th><th>出せるカード</th></tr></thead><tbody>
+          <tr><td>Joker（ドロー4）</td><td>A・2・8・Joker（マーク不問）</td></tr>
+          <tr><td>2／8（ドロー2）</td><td>直前と<strong>同じ数字</strong>のカード、Joker、または直前と<strong>同じマーク</strong>のA・7</td></tr>
+          <tr><td>A（スキップ返し）</td><td>Joker、または直前と<strong>同じマーク</strong>のA・7</td></tr>
+          <tr><td>7（リバース返し）</td><td>Joker、または直前と<strong>同じマーク</strong>のA・2・7・8</td></tr>
+        </tbody></table></div>
+        <p class="guide-footnote">※これはドロー効果が続いている間の判定。通常時の出し方とは異なるよ。複数枚出しでは、同じ数字の組み合わせなどの条件も必要。</p>
+        <h3>ドンと得点</h3>
+        <p>場札の数字と、自分の手札の数字合計が一致したらドンのチャンス。ドン返し・引きドン・開幕ドンなどでは倍率が変わる。4ラウンドの合計得点で勝者が決まるよ。</p>
+      </section>
+      <label class="welcome-remember"><input type="checkbox" id="welcome-skip"> 次回から起動時の説明を表示しない（設定を保存）</label>
+      <p class="welcome-setting-note">チェックした場合も、対戦画面の「？ ルール」からいつでも確認・解除できるよ。</p>
+      <button type="button" id="welcome-start" class="welcome-start">ゲームスタート</button>
+    </div>
+  </section>
+  <button type="button" id="welcome-help" class="welcome-help" aria-label="ルール概要を表示">？ ルール</button>
+
 
   <div id="game-area">
 
@@ -26,6 +79,14 @@
 
     <!-- 設定 -->
     <div id="setting-area">
+      <div id="card-theme-area">
+        <label for="card-theme">カードデザイン：</label>
+        <select id="card-theme" aria-label="カードデザイン">
+          <option value="basic">ベーシック</option>
+          <option value="pop">ポップ</option>
+          <option value="dark">ダーク</option>
+        </select>
+      </div>
 
       <div id="cpu-level-area">
         CPU強さ：
@@ -243,6 +304,13 @@
 
     </div>
 
+    <div id="play-notice" class="play-notice" role="status" aria-live="polite" hidden></div>
+    <div id="top-card-picker" class="top-card-picker hidden" role="dialog" aria-label="最後に置くカードの選択">
+      <strong>最後に置くカードを選んでください</strong>
+      <p>次の人に引き継ぐマークが変わります。</p>
+      <div id="top-card-options"></div>
+      <button type="button" id="top-card-cancel">選び直す</button>
+    </div>
     <!-- ログ -->
     <details id="log-area" open>
 
@@ -256,14 +324,16 @@
 
   <!-- JS -->
 
+<script src="theme.js?v=1914"></script>
 <script src="rules.js?v=17"></script>
-<script src="effects.js?v=190"></script>
-<script src="cpu.js?v=193"></script>
+<script src="effects.js?v=199"></script>
+<script src="cpu.js?v=197"></script>
 <script src="game-core.js?v=193"></script>
-<script src="game-actions.js?v=191"></script>
+<script src="game-actions.js?v=199"></script>
 <script src="game-don.js?v=17"></script>
 <script src="game-ui.js?v=193"></script>
-<script src="game-init.js?v=17"></script>
+<script src="game-init.js?v=1911"></script>
+<script src="welcome.js?v=1912a"></script>
 <script>
   // Ver1.9.6: 小画面では役札の説明を折りたたみ、対戦領域を優先。
   (function () {

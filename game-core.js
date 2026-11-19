@@ -157,7 +157,7 @@ function playSelectedCards(selectedSuit) {
   const player = players[currentPlayerIndex];
   const playedCards = [...selectedCards];
   if (!canPlaySelectedCards(playedCards)) {
-    if (currentPlayerIndex === 0) alert("出せないカードの組み合わせです");
+    if (currentPlayerIndex === 0 && typeof showPlayNotice === "function") showPlayNotice("選択したカードの組み合わせは出せません。場札とのつながりを確認してください。");
     return;
   }
   const topCard = playedCards[playedCards.length - 1];
@@ -232,6 +232,7 @@ function playSelectedCards(selectedSuit) {
 
   checkDonNotice();
   if (resolveOutOfTurnCpuDon()) return;
+  if (resolveNormalSkip()) return;
   nextTurn();
 }
 

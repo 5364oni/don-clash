@@ -37,6 +37,7 @@ let pendingJCards = null;
 let currentPlayerIndex = 0;
 let direction = 1;
 
+let normalSkipPending = null;
 let drawPenalty = 0;
 let drawState = DRAW_STATE.NONE;
 let drawSuit = null;
@@ -107,32 +108,66 @@ if (autoCpuCheckbox) {
   });
 }
 
-playButton.addEventListener("click", () => {
-  if (roundFinished || gameFinished) return;
-  if (currentPlayerIndex !== 0) return;
-  if (selectedCards.length === 0) return;
-
-  const firstCard = selectedCards[0];
-
-  if (!selectedCards.every(card => card.number === firstCard.number)) {
-    alert("同じ数字しか出せません");
+// 選択順に左右されず、合法な先頭カードを探す。最後に置く札は本人が選ぶ。
+function showPlayNotice(message) {
+  const el = document.getElementById("play-notice");
+  if (!el) return;
+  el.textContent = message;
+  el.hidden = false;
+  clearTimeout(showPlayNotice.timer);
+  showPlayNotice.timer = setTimeout(() => { el.hidden = true; }, 4200);
+}
+function commitHumanCards(top) {
+  const rest = selectedCards.filter(c => c !== top);
+  // 先頭を合法なカードにする（場札の条件に合わせる）
+  const leadIndex = rest.findIndex(c => canPlayCard(c));
+  if (leadIndex > 0) rest.unshift(rest.splice(leadIndex, 1)[0]);
+  // 先頭候補がtopだけの場合、複数枚の先頭にもtopを置けないため案内
+  if (rest.length && !canPlayCard(rest[0])) {
+    showPlayNotice("この組み合わせでは最初に置けるカードがありません。場札とつながるカードを選んでください。");
     return;
   }
-
-  if (!canPlaySelectedCards(selectedCards)) {
-    alert("出せません");
-    return;
-  }
-
-  const topCard = selectedCards[selectedCards.length - 1];
-
-  if (topCard.number === 11) {
+  selectedCards = [...rest, top];
+  document.getElementById("top-card-picker").classList.add("hidden");
+  if (top.number === 11) {
     pendingJCards = [...selectedCards];
     suitSelectArea.classList.remove("hidden");
+  } else {
+    playSelectedCards(null);
+  }
+}
+playButton.addEventListener("click", () => {
+  if (roundFinished || gameFinished || currentPlayerIndex !== 0) return;
+  if (!selectedCards.length) {
+    showPlayNotice("出したいカードを選んでください。");
     return;
   }
-
-  playSelectedCards(null);
+  if (!selectedCards.every(c => c.number === selectedCards[0].number)) {
+    showPlayNotice("複数枚出しは同じ数字のカードだけ。別の数字を外して選び直してください。");
+    return;
+  }
+  const options = selectedCards.filter(top => {
+    const rest = selectedCards.filter(c => c !== top);
+    if (!rest.length) return canPlayCard(top);
+    const lead = rest.find(c => canPlayCard(c));
+    return !!lead && canPlaySelectedCards([lead, ...rest.filter(c => c !== lead), top]);
+  });
+  if (!options.length) {
+    showPlayNotice("この組み合わせは出せません。場札と同じマーク・数字の札、または役札の効果を確認してください。");
+    return;
+  }
+  if (options.length === 1) return commitHumanCards(options[0]);
+  const picker = document.getElementById("top-card-picker");
+  const buttons = document.getElementById("top-card-options");
+  buttons.replaceChildren();
+  options.forEach(card => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.textContent = cardText(card) + " を一番上にする";
+    btn.addEventListener("click", () => commitHumanCards(card));
+    buttons.appendChild(btn);
+  });
+  picker.classList.remove("hidden");
 });
 
 suitButtons.forEach(button => {
@@ -183,3 +218,8 @@ newGameButton.addEventListener("click", () => {
   startGame();
 });
 
+
+// 最後に置くカードの選択を取り消す
+document.getElementById("top-card-cancel").addEventListener("click", () => {
+  document.getElementById("top-card-picker").classList.add("hidden");
+});
