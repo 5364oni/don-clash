@@ -164,10 +164,38 @@ function showDonEffect(text) {
   showBigEffect("DON!!", "effect-don");
 }
 
+// Ver1.9.16: visual-only joker entrance. Uses the existing theme-specific joker art.
+let jokerEntranceTimer = null;
+function showJokerEntrance() {
+  const previous = document.getElementById("joker-entrance-overlay");
+  if (previous) previous.remove();
+  if (jokerEntranceTimer !== null) clearTimeout(jokerEntranceTimer);
+
+  const overlay = document.createElement("div");
+  overlay.id = "joker-entrance-overlay";
+  overlay.className = "joker-entrance-overlay";
+  overlay.setAttribute("aria-hidden", "true");
+  overlay.innerHTML = `
+    <div class="joker-entrance-stage">
+      <div class="joker-entrance-fan">
+        <div class="joker-entrance-back joker-entrance-back-1"></div>
+        <div class="joker-entrance-back joker-entrance-back-2"></div>
+        <div class="joker-entrance-back joker-entrance-back-3"></div>
+        <div class="joker-entrance-back joker-entrance-back-4"></div>
+      </div>
+      <div class="joker-entrance-face playing-card joker-card"></div>
+      <div class="joker-entrance-label">JOKER</div>
+    </div>`;
+  document.body.appendChild(overlay);
+  jokerEntranceTimer = setTimeout(() => {
+    overlay.remove();
+    jokerEntranceTimer = null;
+  }, 1850);
+}
 function showJokerEffect() {
   flashScreen("flash-joker", 650);
   shakeScreen();
-  showBigEffect("JOKER!!  +4", "effect-joker");
+  showJokerEntrance();
 }
 
 function showSkipEffect() {
