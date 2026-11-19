@@ -28,3 +28,5 @@ Ver1.9.14h: ZIP全体を展開して上書き。GitHub公開時はassets内のjo
 Ver1.9.14i：ZIPの中身をすべてGitHubへ上書き。style.cssとindex.htmlを必ず更新。公開後はページを再読み込みしてジョーカー3種類を確認。
 
 Ver1.9.15: ZIP展開後、全ファイルを同じ構成でGitHubに上書き。特にindex.html、game-ui.js、style.cssを更新。新絵札36枚はassets内にも保存。
+
+Ver1.9.15a：ZIP展開後、既存の開発フォルダへ全ファイルを上書き。まずローカルで絵札を確認。公開反映は確認後。

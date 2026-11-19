@@ -1754,3 +1754,7 @@ body.welcome-active{overflow:hidden}
 :root[data-card-theme="basic"] .court-basic{display:block}
 :root[data-card-theme="pop"] .court-pop{display:block}
 :root[data-card-theme="dark"] .court-dark{display:block}
+
+/* Ver1.9.15a: court card images use the same portrait ratio as ordinary cards. */
+.court-theme-art{object-fit:contain!important;object-position:center!important;}
+.court-card{overflow:hidden;}
