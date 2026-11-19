@@ -1676,13 +1676,13 @@ body.welcome-active{overflow:hidden}
 :root[data-card-theme="pop"] .joker-card {background:#ffe1f2;color:#c21e86;border-color:#ff73b3;}
 :root[data-card-theme="pop"] #deck-card,
 :root[data-card-theme="pop"] .cpu-back-card,
-:root[data-card-theme="pop"] .draw-fly-card {background:#ffeff8 url('assets/card-back-pop.svg') center / 100% 100% no-repeat;border-color:#ff9bc9;}
+:root[data-card-theme="pop"] .draw-fly-card {background:#ffeff8 url('assets/card-back-pop.png') center / 100% 100% no-repeat;border-color:#ff9bc9;}
 :root[data-card-theme="dark"] .playing-card {background:#141923;color:#e8cf8a;box-shadow:inset 0 0 0 2px #b99550,0 4px 12px #000a;}
 :root[data-card-theme="dark"] .classic-card-art {filter:brightness(.83) sepia(.25) contrast(1.14);}
 :root[data-card-theme="dark"] .joker-card {background:#151a24;color:#e4c17a;border-color:#b99550;}
 :root[data-card-theme="dark"] #deck-card,
 :root[data-card-theme="dark"] .cpu-back-card,
-:root[data-card-theme="dark"] .draw-fly-card {background:#101723 url('assets/card-back-dark.svg') center / 100% 100% no-repeat;border-color:#c9a75e;}
+:root[data-card-theme="dark"] .draw-fly-card {background:#101723 url('assets/card-back-dark.png') center / 100% 100% no-repeat;border-color:#c9a75e;}
 
 /* Ver1.9.14a: full front artwork and playfield themes */
 .theme-card-art{display:none;width:100%;height:100%;object-fit:fill;pointer-events:none;user-select:none}
