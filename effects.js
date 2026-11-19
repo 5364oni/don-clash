@@ -176,6 +176,12 @@ function showJokerEntrance() {
   overlay.className = "joker-entrance-overlay";
   overlay.setAttribute("aria-hidden", "true");
   overlay.innerHTML = `
+    <div class="joker-lightning-layer">
+      <svg class="joker-bolt joker-bolt-left" viewBox="0 0 160 340" aria-hidden="true"><path d="M120 2 L78 81 L112 107 L47 180 L81 198 L20 332"/></svg>
+      <svg class="joker-bolt joker-bolt-right" viewBox="0 0 160 340" aria-hidden="true"><path d="M37 2 L84 72 L52 111 L115 177 L79 217 L144 334"/></svg>
+      <svg class="joker-bolt joker-bolt-top" viewBox="0 0 260 140" aria-hidden="true"><path d="M4 15 L72 43 L99 19 L154 87 L187 61 L256 124"/></svg>
+      <div class="joker-electric-sparks" aria-hidden="true"></div>
+    </div>
     <div class="joker-entrance-stage">
       <div class="joker-entrance-fan">
         <div class="joker-entrance-back joker-entrance-back-1"></div>

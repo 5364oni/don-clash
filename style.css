@@ -1814,3 +1814,20 @@ body.welcome-active{overflow:hidden}
 @keyframes jokerFanSway{0%{transform:rotate(-2deg)}100%{transform:rotate(2deg)}}
 @media(max-width:600px){.joker-entrance-stage{width:210px;height:295px}.joker-entrance-back-1{--shift:-38px}.joker-entrance-back-2{--shift:-20px}.joker-entrance-back-3{--shift:20px}.joker-entrance-back-4{--shift:38px}}
 @media(prefers-reduced-motion:reduce){.joker-entrance-overlay,.joker-entrance-stage,.joker-entrance-fan,.joker-entrance-back{animation:none!important}.joker-entrance-back{transform:translate(calc(-50% + var(--shift)),-50%) rotate(var(--angle))}}
+
+/* Ver1.9.16a: decorative, theme-specific lightning; visual overlay only. */
+.joker-lightning-layer{position:absolute;inset:0;pointer-events:none;z-index:1;--joker-electric:#b6dfff;--joker-electric-glow:rgba(94,177,255,.68)}
+:root[data-card-theme="pop"] .joker-lightning-layer{--joker-electric:#ff8bd3;--joker-electric-glow:rgba(61,225,241,.8)}
+:root[data-card-theme="dark"] .joker-lightning-layer{--joker-electric:#ffe19a;--joker-electric-glow:rgba(255,177,45,.7)}
+.joker-bolt{position:absolute;width:min(24vw,180px);height:min(58vh,390px);overflow:visible;fill:none;stroke:var(--joker-electric);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px var(--joker-electric-glow));opacity:0;animation:jokerElectricStrike 1850ms ease-in-out both}
+.joker-bolt path{stroke-dasharray:480;stroke-dashoffset:480;animation:jokerElectricDraw 1850ms ease-out both}
+.joker-bolt-left{left:max(4%,calc(50% - 310px));top:15%;transform:rotate(-10deg)}
+.joker-bolt-right{right:max(4%,calc(50% - 310px));top:12%;transform:rotate(10deg);animation-delay:90ms}
+.joker-bolt-right path{animation-delay:90ms}
+.joker-bolt-top{left:50%;top:3%;width:min(52vw,320px);height:130px;transform:translateX(-50%);animation-delay:180ms}
+.joker-bolt-top path{animation-delay:180ms}
+.joker-electric-sparks{position:absolute;inset:15% 20%;opacity:0;background:radial-gradient(circle at 12% 30%,var(--joker-electric) 0 2px,transparent 4px),radial-gradient(circle at 87% 60%,var(--joker-electric) 0 3px,transparent 5px),radial-gradient(circle at 50% 12%,var(--joker-electric) 0 2px,transparent 5px);animation:jokerElectricSparks 1850ms ease both}
+@keyframes jokerElectricStrike{0%,7%,22%,52%,61%,72%,100%{opacity:0}9%,16%{opacity:.9}55%,59%{opacity:.8}65%{opacity:.35}}
+@keyframes jokerElectricDraw{0%,7%{stroke-dashoffset:480}18%,60%{stroke-dashoffset:0}100%{stroke-dashoffset:-480}}
+@keyframes jokerElectricSparks{0%,8%,23%,52%,70%,100%{opacity:0}12%,18%,56%,62%{opacity:.85}}
+@media(prefers-reduced-motion:reduce){.joker-bolt,.joker-bolt path,.joker-electric-sparks{animation:none!important;opacity:0!important}}
