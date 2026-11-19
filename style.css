@@ -1836,3 +1836,48 @@ body.welcome-active{overflow:hidden}
 .joker-lightning-layer::before{content:"";position:absolute;inset:7% 7%;background:radial-gradient(ellipse at center,transparent 25%,var(--joker-electric-glow) 100%);opacity:0;animation:jokerElectricHalo 1850ms ease-in-out both;pointer-events:none}
 @keyframes jokerElectricHalo{0%,7%,22%,52%,69%,100%{opacity:0}11%,17%{opacity:.22}56%,60%{opacity:.19}}
 @media(prefers-reduced-motion:reduce){.joker-lightning-layer::before{animation:none!important;opacity:0!important}}
+
+/* Ver1.9.19: natural irregular lightning, dual-layer core and peripheral forks. */
+.joker-bolt{stroke:none;filter:drop-shadow(0 0 5px var(--joker-electric-glow)) drop-shadow(0 0 13px var(--joker-electric-glow))}
+.joker-bolt path{fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0;animation:none}
+.joker-bolt .joker-electric-aura{stroke:var(--joker-electric);stroke-width:7;opacity:.46;filter:blur(3px)}
+.joker-bolt .joker-electric-core{stroke:#fff;stroke-width:1.75;opacity:.98;filter:drop-shadow(0 0 2px var(--joker-electric))}
+.joker-bolt .joker-electric-branch{stroke:var(--joker-electric);stroke-width:1.4;opacity:.9}
+.joker-bolt .joker-electric-twig{stroke:var(--joker-electric);stroke-width:.8;opacity:.7}
+:root[data-card-theme="pop"] .joker-bolt .joker-electric-core{stroke:#fff4ff}
+:root[data-card-theme="dark"] .joker-bolt .joker-electric-core{stroke:#fff8df}
+@media(prefers-reduced-motion:reduce){.joker-bolt,.joker-bolt path{animation:none!important;opacity:0!important}}
+
+
+/* Ver1.9.20: mobile interaction polish. No game-logic or card-size changes. */
+@media (hover: none) and (pointer: coarse) {
+  #button-area button, #welcome-start, #welcome-help, .guide-tab {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(255, 218, 127, .18);
+  }
+  #hand .hand-card-button, #deck-card {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  #button-area button:active:not(:disabled), #welcome-start:active {
+    filter: brightness(1.14);
+  }
+}
+/* Clear keyboard navigation feedback without affecting normal card highlights. */
+#button-area button:focus-visible, #welcome-start:focus-visible,
+#welcome-help:focus-visible, .guide-tab:focus-visible,
+#card-theme:focus-visible, #hand .hand-card-button:focus-visible {
+  outline: 3px solid #ffe09a;
+  outline-offset: 3px;
+}
+/* Fit Joker's entrance into shorter landscape screens without changing its timing. */
+@media (max-height: 450px) and (orientation: landscape) {
+  .joker-entrance-stage { width: min(30vw, 175px); height: min(80dvh, 250px); }
+  .joker-entrance-label { font-size: clamp(14px, 3vh, 22px); }
+  .joker-bolt { height: min(65dvh, 260px); }
+}
+/* Honor system motion preference across decorative entrance elements. */
+@media (prefers-reduced-motion: reduce) {
+  .joker-entrance-fan { animation: none !important; }
+  #button-area button { transition-duration: .01ms !important; }
+}

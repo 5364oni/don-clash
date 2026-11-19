@@ -22,7 +22,7 @@ function startGame() {
   resultArea.textContent = "";
 
   newRoundButton.classList.add("hidden");
-  newGameButton.classList.add("hidden");
+  newGameButton.classList.remove("hidden");
 
   addLog("新ゲーム開始");
   players.slice(1).forEach(player => addLog(player.name + "：" + player.personality.label));

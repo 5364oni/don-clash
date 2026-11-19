@@ -172,6 +172,27 @@ function checkHikiDon(playerIndex) {
 
   return true;
 }
+// 山札と再利用できる捨て札が共に空の場合は流局。得点の移動はない。
+function finishDrawRound() {
+  if (roundFinished || gameFinished) return;
+  clearCpuAutoTimer();
+  roundFinished = true;
+  donNumberActive = false;
+  resetDrawState();
+  selectedCards = [];
+  pendingJCards = null;
+  addLog("山札と再利用できる捨て札がなくなったため流局");
+  addLog("流局：得点の移動なし");
+  resultArea.textContent = "流局：山札が尽きました（得点の移動なし）";
+  updateAll();
+  if (currentRound < MAX_ROUNDS) {
+    newRoundButton.classList.remove("hidden");
+  } else {
+    finishGame();
+  }
+  newGameButton.classList.remove("hidden");
+}
+
 function finishRound(
   winnerIndexes,
   winType,

@@ -120,10 +120,11 @@ function showPlayNotice(message) {
 function commitHumanCards(top) {
   const rest = selectedCards.filter(c => c !== top);
   // 先頭を合法なカードにする（場札の条件に合わせる）
-  const leadIndex = rest.findIndex(c => canPlayCard(c));
+  const jMulti = isJDeclaredSuitTurn() && rest.length > 0 && top.suit === currentSuit;
+  const leadIndex = jMulti ? 0 : rest.findIndex(c => canPlayCard(c));
   if (leadIndex > 0) rest.unshift(rest.splice(leadIndex, 1)[0]);
   // 先頭候補がtopだけの場合、複数枚の先頭にもtopを置けないため案内
-  if (rest.length && !canPlayCard(rest[0])) {
+  if (rest.length && !jMulti && !canPlayCard(rest[0])) {
     showPlayNotice("この組み合わせでは最初に置けるカードがありません。場札とつながるカードを選んでください。");
     return;
   }
@@ -149,6 +150,9 @@ playButton.addEventListener("click", () => {
   const options = selectedCards.filter(top => {
     const rest = selectedCards.filter(c => c !== top);
     if (!rest.length) return canPlayCard(top);
+    if (isJDeclaredSuitTurn() && top.suit === currentSuit) {
+      return canPlaySelectedCards([...rest, top]);
+    }
     const lead = rest.find(c => canPlayCard(c));
     return !!lead && canPlaySelectedCards([lead, ...rest.filter(c => c !== lead), top]);
   });
@@ -215,6 +219,7 @@ newRoundButton.addEventListener("click", () => {
 });
 
 newGameButton.addEventListener("click", () => {
+  if (!roundFinished && !gameFinished && !window.confirm("現在の対戦を終了して、新しいゲームを開始しますか？\n得点とラウンドは初期化されます。")) return;
   startGame();
 });
 

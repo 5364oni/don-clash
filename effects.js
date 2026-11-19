@@ -164,6 +164,56 @@ function showDonEffect(text) {
   showBigEffect("DON!!", "effect-don");
 }
 
+// Ver1.9.19: deterministic fractal-like lightning geometry; visual only.
+// Each strike uses a stable seed, so no repeated layout work during animation.
+function buildNaturalJokerLightning(overlay) {
+  const ns = "http://www.w3.org/2000/svg";
+  const configs = [
+    {cls:"joker-bolt-left", seed:19019, x:119, y:0, ex:20, ey:340, width:160, height:340},
+    {cls:"joker-bolt-right", seed:19119, x:35, y:0, ex:144, ey:340, width:160, height:340},
+    {cls:"joker-bolt-top", seed:19219, x:0, y:13, ex:260, ey:126, width:260, height:140}
+  ];
+  for (const cfg of configs) {
+    const svg = overlay.querySelector("." + cfg.cls);
+    if (!svg) continue;
+    let seed = cfg.seed;
+    const random = () => {seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed / 4294967296;};
+    const steps = 28;
+    const dx = cfg.ex-cfg.x, dy = cfg.ey-cfg.y;
+    const norm = Math.hypot(dx,dy);
+    const nx = -dy/norm, ny = dx/norm;
+    const pts = [];
+    for (let i=0;i<=steps;i++) {
+      const t=i/steps;
+      const taper=Math.sin(Math.PI*t);
+      const jitter=(random()-.5)*24*taper;
+      pts.push([cfg.x+dx*t+nx*jitter, cfg.y+dy*t+ny*jitter]);
+    }
+    const pathData = points => points.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+    const main = pathData(pts);
+    const addPath=(d,cls)=>{const el=document.createElementNS(ns,'path');el.setAttribute('d',d);el.setAttribute('class',cls);svg.appendChild(el);};
+    addPath(main,'joker-electric-aura');
+    addPath(main,'joker-electric-core');
+    for(let k=0;k<8;k++){
+      const start=3+Math.floor(random()*21);
+      const side=random()<.5?-1:1;
+      const count=3+Math.floor(random()*5);
+      const branch=[pts[start]];
+      const len=(12+random()*38)*side;
+      for(let j=1;j<=count;j++){
+        const t=j/count;
+        const drift=len*t+(random()-.5)*9;
+        branch.push([pts[start][0]+dx/norm*25*t+nx*drift,pts[start][1]+dy/norm*25*t+ny*drift]);
+      }
+      addPath(pathData(branch),'joker-electric-branch');
+      if(k%2===0){
+        const sub=branch[Math.min(2,branch.length-1)];
+        addPath(pathData([sub,[sub[0]+nx*side*10+dx/norm*9,sub[1]+ny*side*10+dy/norm*9]]),'joker-electric-twig');
+      }
+    }
+  }
+}
+
 // Ver1.9.16: visual-only joker entrance. Uses the existing theme-specific joker art.
 let jokerEntranceTimer = null;
 function showJokerEntrance() {
@@ -177,9 +227,9 @@ function showJokerEntrance() {
   overlay.setAttribute("aria-hidden", "true");
   overlay.innerHTML = `
     <div class="joker-lightning-layer">
-      <svg class="joker-bolt joker-bolt-left" viewBox="0 0 160 340" aria-hidden="true"><path d="M120 2 L78 81 L112 107 L47 180 L81 198 L20 332"/><path class="joker-branch" d="M78 81 L24 109 L51 139 M47 180 L8 211 L34 244 M81 198 L135 238 L101 272"/></svg>
-      <svg class="joker-bolt joker-bolt-right" viewBox="0 0 160 340" aria-hidden="true"><path d="M37 2 L84 72 L52 111 L115 177 L79 217 L144 334"/><path class="joker-branch" d="M84 72 L137 99 L112 134 M115 177 L151 206 L129 249 M79 217 L23 251 L55 286"/></svg>
-      <svg class="joker-bolt joker-bolt-top" viewBox="0 0 260 140" aria-hidden="true"><path d="M4 15 L72 43 L99 19 L154 87 L187 61 L256 124"/><path class="joker-branch" d="M72 43 L51 91 L24 101 M154 87 L135 124 L111 134 M187 61 L225 18 L246 9"/></svg>
+      <svg class="joker-bolt joker-bolt-left" viewBox="0 0 160 340" aria-hidden="true"></svg>
+      <svg class="joker-bolt joker-bolt-right" viewBox="0 0 160 340" aria-hidden="true"></svg>
+      <svg class="joker-bolt joker-bolt-top" viewBox="0 0 260 140" aria-hidden="true"></svg>
       <div class="joker-electric-sparks" aria-hidden="true"></div>
     </div>
     <div class="joker-entrance-stage">
@@ -193,6 +243,7 @@ function showJokerEntrance() {
       <div class="joker-entrance-label">JOKER</div>
     </div>`;
   document.body.appendChild(overlay);
+  buildNaturalJokerLightning(overlay);
   jokerEntranceTimer = setTimeout(() => {
     overlay.remove();
     jokerEntranceTimer = null;

@@ -145,7 +145,10 @@ function executeDraw(player) {
   animateDeckDraw(currentPlayerIndex);
 
   for (let i = 0; i < count; i++) {
-    drawCard(player);
+    if (!drawCard(player)) {
+      finishDrawRound();
+      return;
+    }
   }
 
   sortHand(player.hand);
@@ -189,6 +192,8 @@ function executeDraw(player) {
 
 function drawCard(player) {
   if (deck.length === 0) {
+    // No cards available: do not raise the rate for an empty reshuffle.
+    if (discardPile.length === 0) return false;
     deck = [...discardPile];
     discardPile = [];
 
@@ -208,11 +213,12 @@ function drawCard(player) {
     );
   }
 
-  if (deck.length === 0) return;
+  if (deck.length === 0) return false;
 
   player.hand.push(deck.pop());
 
   sortHand(player.hand);
+  return true;
 }
 function animateDeckDraw(playerIndex) {
   const deckCard =
