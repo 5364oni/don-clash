@@ -1758,3 +1758,34 @@ body.welcome-active{overflow:hidden}
 /* Ver1.9.15a: court card images use the same portrait ratio as ordinary cards. */
 .court-theme-art{object-fit:contain!important;object-position:center!important;}
 .court-card{overflow:hidden;}
+
+/* Ver1.9.15c: outlines sit OUTSIDE card artwork. Never cover corner ranks. */
+#hand .hand-card-button.hint-special::before,
+#hand .hand-card-button.hint-playable::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-sizing: border-box;
+  z-index: 5;
+}
+/* Gold outer ring: special cards, including those that are playable. */
+#hand .hand-card-button.hint-special::before {
+  outline: 2px solid #ffd43b;
+  outline-offset: 2px;
+  filter: drop-shadow(0 0 2px rgba(255,212,59,.45));
+}
+/* Red ring: playable cards. Outline is outside, not inset over the art. */
+#hand .hand-card-button.hint-playable::after {
+  outline: 2px solid #f04444;
+  outline-offset: 2px;
+}
+/* Double ring: red near card, gold farther outside. */
+#hand .hand-card-button.hint-special.hint-playable::before {
+  outline-offset: 6px;
+}
+/* Keep the existing selected-card elevation/glow intact. */
+#hand .hand-card-button.selected::before,
+#hand .hand-card-button.selected::after { opacity: .9; }
