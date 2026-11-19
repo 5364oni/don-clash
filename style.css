@@ -1731,3 +1731,16 @@ body.welcome-active{overflow:hidden}
   .joker-card .joker-star, .table-card .joker-star,
   #hand .hand-card-button .joker-star { font-size: 34px !important; }
 }
+
+/* Ver1.9.14h: illustrated joker faces only; rules and other cards unchanged. */
+.joker-card { position:relative; overflow:hidden; isolation:isolate; }
+.joker-card::after { content:""; position:absolute; inset:3px; z-index:1; border-radius:inherit; background-image:url("assets/joker-basic-1914h.webp"); background-position:center center; background-size:cover; pointer-events:none; }
+:root[data-card-theme="pop"] .joker-card::after { background-image:url("assets/joker-pop-1914h.webp"); }
+:root[data-card-theme="dark"] .joker-card::after { background-image:url("assets/joker-dark-1914h.webp"); }
+.joker-card .joker-star { display:none !important; }
+.joker-card .joker-top, .joker-card .joker-bottom { position:absolute; z-index:5; left:50%; right:auto; translate:-50% 0; transform:none; width:max-content; max-width:90%; box-sizing:border-box; padding:2px 5px; border-radius:4px; background:rgba(255,248,224,.93); color:#422025; text-shadow:none; font:bold 10px/1.1 Georgia,serif; letter-spacing:.8px; }
+.joker-card .joker-top { top:4px; bottom:auto; }
+.joker-card .joker-bottom { bottom:4px; top:auto; }
+:root[data-card-theme="pop"] .joker-card .joker-top, :root[data-card-theme="pop"] .joker-card .joker-bottom { background:rgba(255,244,252,.94);color:#bf327a; }
+:root[data-card-theme="dark"] .joker-card .joker-top, :root[data-card-theme="dark"] .joker-card .joker-bottom { background:rgba(10,13,25,.92);color:#f4d58a; border:1px solid #9c7b3c; }
+@media(max-width:768px) { .joker-card .joker-top,.joker-card .joker-bottom { font-size:8px;letter-spacing:0; padding:2px 3px; } }
