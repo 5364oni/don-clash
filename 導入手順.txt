@@ -1,7 +1,8 @@
-Ver1.9.3 全体版
-1. Ver1.9.2のバックアップを保持する
-2. ZIP内の全ファイル・assetsを03_開発作業/don-gabacho-nextコピーへ上書き
-3. index.htmlを開く（実行要）
-4. 新規ゲームを複数回開始して性格の再抽選・重複・表示を確認
-5. ラウンド移行では性格が変わらないことを確認
-GitHub更新不要。02_next原本保管は触らない。
+Ver1.9.5 全体版（ドンクラッシュ名称変更）
+1. Ver1.9.4のバックアップを保持する
+2. ZIP内のファイル・assetsを03_開発作業/don-gabacho-nextコピーへ上書き
+3. index.htmlを開き、画面タイトルとブラウザタブが「ドンクラッシュ」か確認（実行要）
+4. ゲームの基本動作とCPU性格表示を確認
+5. 確認後、GitHubのリポジトリ名をdon-gabachoからdon-clashへ変更（Settings > General > Repository name）。GitHub Pages設定と新URLを確認
+6. 新URL https://5364oni.github.io/don-clash/ で動作確認。反映までは旧URLを削除しない
+注意：GitHubの名前変更は自動では行われません。02_next原本保管は触らない。
