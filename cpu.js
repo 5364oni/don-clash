@@ -70,6 +70,7 @@ return Math.max(0.05, Math.min(0.98, base + le\u0076elAdjust));
 }
 function ru\u006eAutoCpuIfNeeded() {
 cl\u0065arCpuAutoTimer();
+if(so\u006coDealing)return;
 if (pe\u006edingHumanCounterDon) return;
 if (!au\u0074oCpuMode) return;
 if (ro\u0075ndFinished) return;

@@ -314,6 +314,7 @@ player.score +
 "点\n";
 }
 );
+window.DonSfx?.result(players[0].score===ranking[0].score,"solo");
 re\u0073ultArea.te\u0078tContent =
 ra\u006ekingText;
 addLog("ゲーム終了");

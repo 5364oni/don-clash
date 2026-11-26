@@ -8,6 +8,9 @@ up\u0064ateScore();
 up\u0064ateTurn();
 up\u0064ateDonButton();
 re\u006ederSoloDonReveal();
+const ready= !so\u006coDealing && !ro\u0075ndFinished && !ga\u006deFinished && cu\u0072rentPlayerIndex===0 && !pe\u006edingHumanHikiDon && !pe\u006edingHumanCounterDon;
+if(!ready){window.DonSfx?.ca\u006ecelTurn("solo");return;}
+if(so\u006coNoticeSerial!==so\u006coTurnSerial){const serial=so\u006coTurnSerial;so\u006coNoticeSerial=serial;window.DonSfx?.notify("solo",()=>serial===so\u006coTurnSerial&&!so\u006coDealing&&!ro\u0075ndFinished&&!ga\u006deFinished&&cu\u0072rentPlayerIndex===0&&!pe\u006edingHumanHikiDon&&!pe\u006edingHumanCounterDon);}
 }
 function up\u0064ateTable() {
 tableArea.innerHTML = "";
@@ -120,8 +123,10 @@ button.classList.add("selected");
 button.style.zIndex = "200";
 }
 button.ad\u0064EventListener("click", () => {
-if (ro\u0075ndFinished || ga\u006deFinished) return;
+if (so\u006coDealing || ro\u0075ndFinished || ga\u006deFinished) return;
 if (cu\u0072rentPlayerIndex !== 0) return;
+window.DonSfx?.ca\u006ecelTurn("solo");
+window.DonSfx?.play("select",{mode:"solo"});
 if (se\u006cectedCards.includes(card)) {
 se\u006cectedCards =
 se\u006cectedCards.filter(c => c !== card);

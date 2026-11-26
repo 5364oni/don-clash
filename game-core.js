@@ -1,6 +1,8 @@
 /*! © 2026 DON CLASH 制作・運営 | All rights reserved where applicable. See rights.html. */
 
 function startGame() {
+window.DonDealFX?.finish("solo",false);
+window.DonSfx?.ca\u006ecelTurn("solo");
 window.Do\u006eAnalytics?.soloReset();
 cl\u0065arCpuAutoTimer();
 const au\u0074oCheckbox = document.ge\u0074ElementById("auto-cpu");
@@ -28,7 +30,11 @@ addLog("新ゲーム開始");
 players.slice(1).forEach(player => addLog(player.name + "：" + player.pe\u0072sonality.label));
 st\u0061rtRound();
 }
+let so\u006coTurnSerial=0,so\u006coNoticeSerial=-1,so\u006coDealing=false;
 function st\u0061rtRound() {
+window.DonDealFX?.finish("solo",false);
+window.DonSfx?.ca\u006ecelTurn("solo");
+so\u006coDealing=true;so\u006coTurnSerial++;
 if (typeof so\u006coDonReveal !== "undefined") {
 so\u006coDonReveal = null;
 document.qu\u0065rySelectorAll(".solo-don-reveal").forEach(el=>el.remove());
@@ -70,8 +76,8 @@ addLog(cu\u0072rentRound + "回戦開始");
 addLog("親：" + players[pa\u0072entIndex].name);
 addLog("最初の場札：" + cardText(cu\u0072rentCard));
 addLog("山札残り：" + deck.length + "枚");
-ch\u0065ckOpeningDon();
-ru\u006eAutoCpuIfNeeded();
+const afterDeal=()=>{so\u006coDealing=false;ch\u0065ckOpeningDon();updateAll();ru\u006eAutoCpuIfNeeded();};
+if(window.DonDealFX)window.DonDealFX.start("solo",afterDeal);else afterDeal();
 }
 function cr\u0065ateDeck() {
 const newDeck = [];
@@ -134,6 +140,7 @@ return top.suit === cu\u0072rentSuit;
 return ca\u006ePlayCard(cards[0]);
 }
 function pl\u0061ySelectedCards(se\u006cectedSuit) {
+if(so\u006coDealing)return;
 const player = players[cu\u0072rentPlayerIndex];
 const pl\u0061yedCards = [...se\u006cectedCards];
 if (!ca\u006ePlaySelectedCards(pl\u0061yedCards)) {

@@ -1,0 +1,23 @@
+.dc-sfx-controls{display:inline-flex;align-items:center;justify-content:center;gap:5px;font:12px system-ui,sans-serif;color:inherit;white-space:nowrap;vertical-align:middle;flex:0 0 auto}
+.dc-sfx-controls label{display:flex!important;align-items:center;gap:4px;margin:0!important;font-size:12px!important}
+.dc-sfx-controls input.dc-sfx-slider{display:inline-block!important;width:64px!important;padding:0!important;margin:0!important;accent-color:#bd985d}
+.dc-sfx-controls button.dc-sfx-mute{font:12px system-ui,sans-serif;padding:3px 6px;min-width:0;border:1px solid #987d4c;border-radius:5px;color:#f4dfba;background:#352c22;cursor:pointer}
+#dc-title .dc-sfx-controls{position:absolute;bottom:8px;left:8px;z-index:5;color:#d2bb97}
+.online-card-toolbar{align-items:center;gap:10px;flex-wrap:wrap}.online-card-toolbar>.dc-sfx-controls{color:#eedcb8}.online-card-toolbar>.dc-sfx-controls label{display:flex!important;align-items:center;gap:4px}
+.dc-deal-fly,.dc-deal-self>[class]::after,.dc-deal-field-back::after{background:#f8f6ee url('assets/card-back.svg') center/100% 100% no-repeat;border:1px solid #f9f5eb;border-radius:5px;box-sizing:border-box;box-shadow:0 2px 5px #0008}
+.dc-deal-fly{position:fixed;z-index:110000;pointer-events:none;transform-origin:top left}
+.dc-deal-self>*{position:relative!important;pointer-events:none}
+.dc-deal-self>* > *{visibility:hidden!important}
+.dc-deal-self>[class]::after,.dc-deal-field-back::after{content:'';position:absolute;inset:0;z-index:100;visibility:visible}
+.dc-deal-self[data-dc-count='0']>*::after{visibility:hidden}
+.dc-deal-field-hidden{visibility:hidden!important}
+.dc-deal-field-back{position:relative;isolation:isolate}
+.dc-deal-field-back>*{visibility:hidden!important}
+.dc-deal-status{position:fixed;top:48%;left:50%;transform:translate(-50%,-50%);z-index:110001;border:1px solid #b1965b;background:#121816e8;color:#f9dfaa;font:600 14px system-ui,sans-serif;border-radius:6px;padding:7px 12px;pointer-events:none;white-space:nowrap}
+
+[data-dc-count="0"] > :nth-child(n+1),.dc-deal-self[data-dc-count="0"] > :nth-child(n+1)::after{visibility:hidden!important}
+[data-dc-count="1"] > :nth-child(n+2),.dc-deal-self[data-dc-count="1"] > :nth-child(n+2)::after{visibility:hidden!important}
+[data-dc-count="2"] > :nth-child(n+3),.dc-deal-self[data-dc-count="2"] > :nth-child(n+3)::after{visibility:hidden!important}
+[data-dc-count="3"] > :nth-child(n+4),.dc-deal-self[data-dc-count="3"] > :nth-child(n+4)::after{visibility:hidden!important}
+[data-dc-count="4"] > :nth-child(n+5),.dc-deal-self[data-dc-count="4"] > :nth-child(n+5)::after{visibility:hidden!important}
+#dc-title-replay{position:absolute;bottom:8px;right:8px;z-index:5;color:#d2bb97;background:#101010d9;border:1px solid #66563b;padding:4px 8px;font:12px system-ui,sans-serif;border-radius:5px}#dc-title-replay:disabled{opacity:.45;cursor:default}

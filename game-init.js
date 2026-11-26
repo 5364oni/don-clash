@@ -97,6 +97,8 @@ cl\u0065arTimeout(sh\u006fwPlayNotice.timer);
 sh\u006fwPlayNotice.timer = se\u0074Timeout(() => { el.hidden = true; }, 4200);
 }
 function co\u006dmitHumanCards(top) {
+if(so\u006coDealing)return;
+window.DonSfx?.ca\u006ecelTurn("solo");
 if (pe\u006edingHumanHikiDon || pe\u006edingHumanCounterDon) return;
 const rest = se\u006cectedCards.filter(c => c !== top);
 const jMulti = is\u004aDeclaredSuitTurn() && rest.length > 0 && top.suit === cu\u0072rentSuit;
@@ -116,7 +118,7 @@ pl\u0061ySelectedCards(null);
 }
 }
 pl\u0061yButton.ad\u0064EventListener("click", () => {
-if (ro\u0075ndFinished || ga\u006deFinished || cu\u0072rentPlayerIndex !== 0) return;
+if (so\u006coDealing || ro\u0075ndFinished || ga\u006deFinished || cu\u0072rentPlayerIndex !== 0) return;
 if (pe\u006edingHumanCounterDon) {
 sh\u006fwPlayNotice("ドン返し！か見送るを選んでください。");
 return;
@@ -169,7 +171,7 @@ pl\u0061ySelectedCards(se\u006cectedSuit);
 });
 });
 dr\u0061wButton.ad\u0064EventListener("click", () => {
-if (ro\u0075ndFinished || ga\u006deFinished) return;
+if (so\u006coDealing || ro\u0075ndFinished || ga\u006deFinished) return;
 if (pe\u006edingHumanCounterDon) return;
 if (cu\u0072rentPlayerIndex !== 0) return;
 if (pe\u006edingHumanHikiDon) {
@@ -179,7 +181,7 @@ return;
 ex\u0065cuteDraw(players[0]);
 });
 donButton.ad\u0064EventListener("click", () => {
-if (ro\u0075ndFinished || ga\u006deFinished) return;
+if (so\u006coDealing || ro\u0075ndFinished || ga\u006deFinished) return;
 if (pe\u006edingHumanCounterDon) {
 de\u0063ideHumanCounterDon(true);
 return;
@@ -195,7 +197,7 @@ return;
 tryDon(0);
 });
 ne\u0078tButton.ad\u0064EventListener("click", () => {
-if (ro\u0075ndFinished || ga\u006deFinished) return;
+if (so\u006coDealing || ro\u0075ndFinished || ga\u006deFinished) return;
 if (pe\u006edingHumanCounterDon) {
 de\u0063ideHumanCounterDon(false);
 return;
@@ -211,6 +213,7 @@ window.Do\u006eAnalytics?.so\u006coAction();
 cpuAction();
 });
 ne\u0077RoundButton.ad\u0064EventListener("click", () => {
+if(so\u006coDealing)return;
 cu\u0072rentRound++;
 pa\u0072entIndex = (pa\u0072entIndex + 1) % players.length;
 ro\u0075ndFinished = false;
@@ -219,6 +222,7 @@ ne\u0077RoundButton.classList.add("hidden");
 st\u0061rtRound();
 });
 ne\u0077GameButton.ad\u0064EventListener("click", () => {
+if(so\u006coDealing)return;
 if (!ro\u0075ndFinished && !ga\u006deFinished && !window.confirm("現在の対戦を終了して、新しいゲームを開始しますか？\n得点とラウンドは初期化されます。")) return;
 startGame();
 window.Do\u006eAnalytics?.so\u006coAction();

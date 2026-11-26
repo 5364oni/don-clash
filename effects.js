@@ -108,6 +108,7 @@ burst.remove();
 }, 1400);
 }
 function sh\u006fwDonEffect(text) {
+window.DonSfx?.play(text?.includes("返し")?"counterfx":"donfx",{special:true});
 if (text && text.includes("引きドン返し")) {
 sh\u0061keScreen();
 fl\u0061shScreen("flash-draw-counter", 450);
@@ -211,29 +212,35 @@ jo\u006berEntranceTimer = null;
 }, 1850);
 }
 function sh\u006fwJokerEffect() {
+window.DonSfx?.play("jokerfx",{special:true});
 fl\u0061shScreen("flash-joker", 650);
 sh\u0061keScreen();
 sh\u006fwJokerEntrance();
 }
 function sh\u006fwSkipEffect() {
+window.DonSfx?.play("skipfx",{special:true});
 sh\u006fwBigEffect("SKIP!!", "effect-skip");
 sh\u006fwSkipFlowEffect();
 }
 function sh\u006fwDraw2Effect(target) {
+window.DonSfx?.play("draw2alt",{special:true});
 sh\u006fwBigEffect("DRAW +2!!", "effect-draw2");
 bo\u0075nceDeck(2, target);
 }
 function sh\u006fwReverseEffect(target) {
+window.DonSfx?.play("reversefx",{special:true});
 sh\u006fwBigEffect("REVERSE!!", "effect-reverse");
 ro\u0074ateTable(target);
 }
 function sh\u006fwMarkChangeEffect(suit) {
+window.DonSfx?.play("suitfx",{special:true});
 const names = {"♠":"スペード", "♥":"ハート", "♦":"ダイヤ", "♣":"クラブ"};
 sh\u006fwBigEffect(`J マーク指定：${suit} ${names[suit] || ""}`, "effect-mark", 2100);
 if (suit) sh\u006fwSuitBurst(suit);
 }
 function sh\u006fwCardFlyEffect(cards, pl\u0061yerIndex, anchors) {
 if (!Array.isArray(cards) || cards.length === 0) return;
+window.DonSfx?.play("card");
 const target = anchors?.target || document.ge\u0074ElementById("table-stack") || document.ge\u0074ElementById("table-area");
 if (!target) return;
 const source = anchors?.source || (pl\u0061yerIndex === 0

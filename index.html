@@ -8,28 +8,30 @@
     content="width=device-width, initial-scale=1.0"
   />
 
-  <title>ドンクラッシュ Ver2.0.5</title>
+  <title>ドンクラッシュ Ver2.0.6a</title>
 
   <link rel="icon" type="image/svg+xml" href="assets/card-back.svg" />
-  <link rel="stylesheet" href="style.css?v=205" />
+  <link rel="stylesheet" href="style.css?v=206" />
   <meta name="copyright" content="© 2026 DON CLASH 制作・運営">
   <link rel="stylesheet" href="analytics.css?v=44" />
-  <link rel="stylesheet" href="title.css?v=205" />
+  <link rel="stylesheet" href="title.css?v=206" />
+  <link rel="stylesheet" href="sfx.css?v=45a" />
 </head>
 
 <body class="welcome-active">
   <section id="dc-title" role="dialog" aria-modal="true" aria-label="DON CLASH タイトル画面">
-    <img id="dc-logo" src="assets/title-logo.webp?v=205" alt="DON CLASH 宿命の道化師">
+    <img id="dc-logo" src="assets/title-logo.webp?v=206" alt="DON CLASH 宿命の道化師">
     <canvas id="dc-fx" aria-hidden="true"></canvas>
     <nav id="dc-menu" aria-label="タイトルメニュー">
       <button type="button" id="dc-start" class="dc-start-button" disabled><span class="start-word">GAME START</span></button>
       <button type="button" id="dc-help" class="dc-minor" disabled>遊び方</button>
     </nav>
     <button type="button" class="dc-analytics-link" data-dc-analytics>アクセス解析設定</button>
+    <button type="button" id="dc-title-replay" class="dc-minor" disabled>雷演出を再生</button>
     <button type="button" id="dc-skip" class="dc-minor">スキップ</button>
   </section>
 
-  <!-- Ver2.0.5: 任意で開くルールガイド -->
+  <!-- Ver2.0.6a: 任意で開くルールガイド -->
   <section id="welcome-overlay" class="welcome-overlay welcome-hidden" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
     <div class="welcome-panel">
       <div class="welcome-kicker">HOW TO PLAY</div>
@@ -83,7 +85,7 @@
 
   <div id="game-area" inert>
 
-    <h1>ドンクラッシュ <small class="solo-version">Ver2.0.5</small></h1>
+    <h1>ドンクラッシュ <small class="solo-version">Ver2.0.6a</small></h1>
 
     <!-- 点数 -->
     <div id="score-area"></div>
@@ -339,17 +341,19 @@
 <!-- JS -->
 
 <dialog id="dc-analytics-dialog" aria-labelledby="dc-analytics-heading"><h2 id="dc-analytics-heading">アクセス解析の設定</h2><p>ゲーム改善のため、任意でGoogle Analyticsを利用します。許可すると閲覧・端末・利用時間や対戦開始・終了などの利用状況をGoogleへ送信し、Cookie等を使って計測します。プレイヤー名・ルーム番号・手札・認証情報は解析イベントに含めません。</p><p>許可しなくてもすべてのゲーム機能を利用できます。設定はいつでも変更できます。</p><p><a href="rights.html#analytics" target="_blank" rel="noopener noreferrer">データの取り扱い・外部送信について</a></p><p id="dc-analytics-state"></p><div class="dc-analytics-actions"><button type="button" id="dc-analytics-yes">許可する</button><button type="button" id="dc-analytics-no">拒否する</button><button type="button" id="dc-analytics-close">閉じる</button></div></dialog>
-<script src="analytics.js?v=44"></script>
-<script src="theme.js?v=205"></script>
-<script src="rules.js?v=205"></script>
-<script src="effects.js?v=205"></script>
-<script src="cpu.js?v=205"></script>
-<script src="game-core.js?v=205"></script>
-<script src="game-actions.js?v=205"></script>
-<script src="game-don.js?v=205"></script>
-<script src="game-ui.js?v=205"></script>
-<script src="game-init.js?v=205"></script>
-<script src="welcome.js?v=205"></script>
+<script src="analytics.js?v=45a"></script>
+<script src="theme.js?v=206"></script>
+<script src="rules.js?v=206"></script>
+<script src="sfx.js?v=45a"></script>
+<script src="deal-fx.js?v=45"></script>
+<script src="effects.js?v=206"></script>
+<script src="cpu.js?v=206"></script>
+<script src="game-core.js?v=206"></script>
+<script src="game-actions.js?v=206"></script>
+<script src="game-don.js?v=206"></script>
+<script src="game-ui.js?v=206"></script>
+<script src="game-init.js?v=206"></script>
+<script src="welcome.js?v=206a"></script>
 <script>
   // Ver1.9.6: 小画面では役札の説明を折りたたみ、対戦領域を優先。
   (function () {

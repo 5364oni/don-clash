@@ -112,6 +112,8 @@ ad\u0076anceTurn();
 }
 }
 function ex\u0065cuteDraw(player) {
+if(so\u006coDealing)return;
+window.DonSfx?.ca\u006ecelTurn("solo");
 if (!player.isCPU) window.Do\u006eAnalytics?.so\u006coAction();
 const count =
 dr\u0061wPenalty > 0
@@ -124,6 +126,7 @@ fi\u006eishDrawRound();
 return;
 }
 }
+window.DonSfx?.play("draw",{mode:"solo"});
 sortHand(player.hand);
 addLog(
 player.name +
@@ -240,6 +243,7 @@ updateAll();
 ru\u006eAutoCpuIfNeeded();
 }
 function ad\u0076anceTurn() {
+so\u006coTurnSerial++;
 cu\u0072rentPlayerIndex =
 (
 cu\u0072rentPlayerIndex +
@@ -249,6 +253,7 @@ players.length
 players.length;
 }
 function cpuAction() {
+if(so\u006coDealing)return;
 if (ro\u0075ndFinished || ga\u006deFinished || pe\u006edingHumanCounterDon) return;
 if (cu\u0072rentPlayerIndex === 0) return;
 cl\u0065arCpuAutoTimer();

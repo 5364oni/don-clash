@@ -2,7 +2,7 @@
 
 (function(){
 'use strict';
-const me\u0061surement="G-Z7WJSMML2F", canonical="https://5364oni.github.io/don-clash/", en\u0076ironment="solo_public", release="Ver2.0.5";
+const me\u0061surement="G-Z7WJSMML2F", canonical="https://5364oni.github.io/don-clash/", en\u0076ironment="solo_public", release="Ver2.0.6a";
 const key='don-clash-analytics-choice-v1', disabled='ga-disable-'+me\u0061surement;
 let pr\u0065ference=null, loaded=false, pageSent=false, so\u006coActive=false, soloEnded=false;
 try { const saved=lo\u0063alStorage.getItem(key); if(saved==='yes'||saved==='no')pr\u0065ference=saved; } catch(_){}
