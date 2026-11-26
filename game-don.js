@@ -10,6 +10,7 @@ if (typeof sh\u006fwPlayNotice === "function") sh\u006fwPlayNotice("ドンは、
 }
 return;
 }
+if (pl\u0061yerIndex === 0) window.Do\u006eAnalytics?.so\u006coAction();
 const do\u006ePlayers = ge\u0074DonPlayers();
 re\u0073olveDonBattle(
 do\u006ePlayers,
@@ -105,6 +106,7 @@ fi\u006eishRound(do\u006ePlayers, winType, mu\u006ctiplier, [ta\u0062leNumberOwn
 function de\u0063ideHumanCounterDon(accept) {
 const pending = pe\u006edingHumanCounterDon;
 if (!pending || ro\u0075ndFinished || ga\u006deFinished || !ca\u006eCounterDon() || ta\u0062leNumberOwnerIndex !== 0) return false;
+window.Do\u006eAnalytics?.so\u006coAction();
 pe\u006edingHumanCounterDon = null;
 if (accept) {
 fi\u006eishRound([0], pending.winType + "返し",
@@ -132,6 +134,7 @@ return ca\u006ePlayerDon(pl\u0061yerIndex);
 }
 function ch\u0065ckHikiDon(pl\u0061yerIndex) {
 if (!ca\u006ePlayerDon(pl\u0061yerIndex)) return false;
+if (pl\u0061yerIndex === 0) window.Do\u006eAnalytics?.so\u006coAction();
 re\u0073olveDonBattle([pl\u0061yerIndex], "引きドン", GA\u004dE_RULES.HI\u004bI_DON_MULTIPLIER);
 return true;
 }
@@ -291,6 +294,7 @@ fi\u006eishGame();
 ne\u0077GameButton.classList.remove("hidden");
 }
 function fi\u006eishGame() {
+window.Do\u006eAnalytics?.soloEnd();
 ga\u006deFinished = true;
 const ranking =
 [...players].sort(

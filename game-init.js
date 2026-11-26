@@ -78,6 +78,7 @@ if (au\u0074oCpuCheckbox) {
 au\u0074oCpuCheckbox.ad\u0064EventListener("change", () => {
 au\u0074oCpuMode = au\u0074oCpuCheckbox.checked;
 if (au\u0074oCpuMode) {
+window.Do\u006eAnalytics?.so\u006coAction();
 addLog("CPU自動進行：ON");
 ru\u006eAutoCpuIfNeeded();
 } else {
@@ -206,6 +207,7 @@ nextTurn();
 return;
 }
 if (cu\u0072rentPlayerIndex === 0) return;
+window.Do\u006eAnalytics?.so\u006coAction();
 cpuAction();
 });
 ne\u0077RoundButton.ad\u0064EventListener("click", () => {
@@ -219,6 +221,7 @@ st\u0061rtRound();
 ne\u0077GameButton.ad\u0064EventListener("click", () => {
 if (!ro\u0075ndFinished && !ga\u006deFinished && !window.confirm("現在の対戦を終了して、新しいゲームを開始しますか？\n得点とラウンドは初期化されます。")) return;
 startGame();
+window.Do\u006eAnalytics?.so\u006coAction();
 });
 document.ge\u0074ElementById("top-card-cancel").ad\u0064EventListener("click", () => {
 document.ge\u0074ElementById("top-card-picker").classList.add("hidden");

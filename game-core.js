@@ -1,6 +1,7 @@
 /*! © 2026 DON CLASH 制作・運営 | All rights reserved where applicable. See rights.html. */
 
 function startGame() {
+window.Do\u006eAnalytics?.soloReset();
 cl\u0065arCpuAutoTimer();
 const au\u0074oCheckbox = document.ge\u0074ElementById("auto-cpu");
 if (au\u0074oCheckbox) au\u0074oCpuMode = au\u0074oCheckbox.checked;
@@ -139,6 +140,7 @@ if (!ca\u006ePlaySelectedCards(pl\u0061yedCards)) {
 if (cu\u0072rentPlayerIndex === 0 && typeof sh\u006fwPlayNotice === "function") sh\u006fwPlayNotice("選択したカードの組み合わせは出せません。場札とのつながりを確認してください。");
 return;
 }
+if (cu\u0072rentPlayerIndex === 0) window.Do\u006eAnalytics?.so\u006coAction();
 const topCard = pl\u0061yedCards[pl\u0061yedCards.length - 1];
 if (cu\u0072rentCard) {
 di\u0073cardPile.push(cu\u0072rentCard);

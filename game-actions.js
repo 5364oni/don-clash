@@ -112,6 +112,7 @@ ad\u0076anceTurn();
 }
 }
 function ex\u0065cuteDraw(player) {
+if (!player.isCPU) window.Do\u006eAnalytics?.so\u006coAction();
 const count =
 dr\u0061wPenalty > 0
 ? dr\u0061wPenalty
