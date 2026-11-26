@@ -119,8 +119,8 @@ return card.type === "joker" || card.number === 1 ||
 (card.number === 7 && card.suit === drawSuit);
 }
 if (drawState === DR\u0041W_STATE.REVERSE) {
-return card.type === "joker" ||
-([1, 2, 7, 8].includes(card.number) && card.suit === drawSuit);
+return card.type === "joker" || card.number === 7 ||
+([1, 2, 8].includes(card.number) && card.suit === drawSuit);
 }
 return false;
 }
