@@ -1,0 +1,40 @@
+/* Approved V4 title visual styles, scoped to title and title guide. */
+#dc-title, #dc-title * {box-sizing:border-box}
+#dc-title{position:fixed;inset:0;background:#000;overflow:hidden;z-index:200000;color:#eee;font-family:system-ui,sans-serif}
+#dc-title[hidden],#dc-skip[hidden]{display:none!important}
+#dc-fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+#dc-title button,.dc-start-button{cursor:pointer}
+#dc-title .dc-minor{font-family:system-ui,sans-serif}
+#dc-title .dc-minor{border-radius:8px;cursor:pointer}
+#dc-skip{position:absolute;top:max(8px,env(safe-area-inset-top));right:max(8px,env(safe-area-inset-right));z-index:4;color:#bbb;background:#101010d9;border:1px solid #555;padding:6px 9px;font-size:11px}
+:root{--title-size:min(86vw,calc(100vh - 176px),820px)}
+#dc-title{position:fixed;inset:0;background:#000;overflow:hidden}
+#dc-logo{position:absolute;left:50%;top:50%;width:min(86vw,87vh,820px);height:auto;max-height:87vh;object-fit:contain;opacity:0;transform:translate(-50%,-50%) scale(.9);will-change:opacity,transform,filter}
+#dc-logo{z-index:1}
+#dc-fx{z-index:2}
+#dc-menu{position:absolute;z-index:3;left:50%;top:calc(50% + var(--title-size)/2 - 40px);transform:translateX(-50%) translateY(9px);display:flex;flex-direction:column;align-items:center;gap:10px;opacity:0;visibility:hidden;transition:opacity .4s,transform .4s;width:min(74vw,340px)}
+#dc-menu.on{opacity:1;visibility:visible;transform:translateX(-50%)}
+.dc-start-button{width:100%;border:1px solid #d0a153;border-radius:5px;background:linear-gradient(180deg,#42291a,#21140c 50%,#352216);box-shadow:0 0 18px #c9953833,inset 0 0 0 2px #0e0907;letter-spacing:.18em;color:#ffe2a6;font-weight:800;font-size:clamp(16px,3vw,23px);padding:12px 20px;text-shadow:0 2px 3px #000}
+.dc-start-button{font-family:Georgia,"Times New Roman",serif;font-weight:700;font-size:clamp(20px,3.5vw,27px);letter-spacing:.105em;line-height:1.16;position:relative;padding:12px 20px;color:#f7d99c;text-shadow:0 2px 1px #000,0 0 10px #e4af5233;}
+.dc-start-button:hover{filter:brightness(1.22)}
+.dc-minor{background:transparent;border:0;color:#c0ae92;padding:5px 12px;font-size:13px}
+.dc-start-button .start-word{display:inline-block;background:linear-gradient(180deg,#fff2cb 5%,#e7ba6b 52%,#c18c42 53%,#f4d59a 100%);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none;filter:drop-shadow(0 2px 1px #000);}
+.dc-start-button:before,.dc-start-button:after{content:"";position:absolute;top:50%;width:5px;height:5px;background:#c99c55;transform:translateY(-50%) rotate(45deg);box-shadow:0 0 5px #e5b66888;pointer-events:none}
+.dc-start-button:before{left:13px}
+.dc-start-button:after{right:13px}
+
+#dc-title.logo-missing:before{content:"DON CLASH";position:absolute;top:40%;left:0;right:0;text-align:center;font:bold clamp(26px,6vw,54px) Georgia,serif;color:#e7ba6b}
+#dc-title.logo-missing #dc-menu{top:58%}
+#dc-title button:focus-visible,.dc-start-button:focus-visible{outline:2px solid #ffe4a8;outline-offset:3px}
+#welcome-overlay.dc-title-guide{background:radial-gradient(ellipse at top,#302015,#0b0b0d 70%);align-items:center}
+#welcome-overlay.dc-title-guide .welcome-panel{max-width:760px;width:100%;background:#171719;border:1px solid #72532d;border-radius:12px;padding:clamp(14px,3vw,28px);box-shadow:0 12px 45px #0008}
+#welcome-overlay.dc-title-guide .welcome-kicker{color:#d3a967;letter-spacing:.2em}
+#welcome-overlay.dc-title-guide h2{color:#ffe2a6}
+#welcome-overlay.dc-title-guide p{color:#d5d3cf}
+#welcome-overlay.dc-title-guide h3{color:#e8c78e}
+#welcome-overlay.dc-title-guide .welcome-guide section,#welcome-overlay.dc-title-guide .guide-rule-grid article,#welcome-overlay.dc-title-guide .guide-example{background:#232224;border:1px solid #4d4133}
+#welcome-overlay.dc-title-guide .guide-tab{background:#241a12;border-color:#8b6436;color:#eac88b}
+#welcome-overlay.dc-title-guide .guide-tab.active{background:#654922;color:#fff4dc}
+#welcome-start.dc-start-button{margin-top:14px;display:block;width:min(100%,340px);margin-inline:auto}
+@media(max-height:350px){:root{--title-size:min(70vw,calc(100vh - 126px),820px)}#dc-menu{top:calc(50% + var(--title-size)/2 - 35px);gap:3px}.dc-start-button{font-size:19px;padding:7px 12px}#dc-title .dc-minor{padding:3px 8px}}
+@media(prefers-reduced-motion:reduce){#dc-menu{transition:none}}

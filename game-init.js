@@ -64,7 +64,6 @@ const cp\u0075LevelSelect = document.ge\u0074ElementById("cpu-level");
 const au\u0074oCpuCheckbox = document.ge\u0074ElementById("auto-cpu");
 const su\u0069tSelectArea = document.ge\u0074ElementById("suit-select");
 const su\u0069tButtons = document.qu\u0065rySelectorAll("#suit-select button");
-startGame();
 if (cp\u0075LevelSelect) {
 cp\u0075LevelSelect.ad\u0064EventListener("change", () => {
 cpuLevel = cp\u0075LevelSelect.value;

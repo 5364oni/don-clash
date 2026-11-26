@@ -8,17 +8,27 @@
     content="width=device-width, initial-scale=1.0"
   />
 
-  <title>ドンクラッシュ Ver2.0.2</title>
+  <title>ドンクラッシュ Ver2.0.3</title>
 
   <link rel="icon" type="image/svg+xml" href="assets/card-back.svg" />
-  <link rel="stylesheet" href="style.css?v=202" />
+  <link rel="stylesheet" href="style.css?v=203" />
   <meta name="copyright" content="© 2026 DON CLASH 制作・運営">
+  <link rel="stylesheet" href="title.css?v=203" />
 </head>
 
-<body>
+<body class="welcome-active">
+  <section id="dc-title" role="dialog" aria-modal="true" aria-label="DON CLASH タイトル画面">
+    <img id="dc-logo" src="assets/title-logo.webp?v=203" alt="DON CLASH 宿命の道化師">
+    <canvas id="dc-fx" aria-hidden="true"></canvas>
+    <nav id="dc-menu" aria-label="タイトルメニュー">
+      <button type="button" id="dc-start" class="dc-start-button" disabled><span class="start-word">GAME START</span></button>
+      <button type="button" id="dc-help" class="dc-minor" disabled>遊び方</button>
+    </nav>
+    <button type="button" id="dc-skip" class="dc-minor">スキップ</button>
+  </section>
 
-  <!-- Ver1.9.10: 初心者向けスタートガイド。ゲーム盤面を隠さず重ねて表示する。 -->
-  <section id="welcome-overlay" class="welcome-overlay" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
+  <!-- Ver2.0.3: 任意で開くルールガイド -->
+  <section id="welcome-overlay" class="welcome-overlay welcome-hidden" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
     <div class="welcome-panel">
       <div class="welcome-kicker">HOW TO PLAY</div>
       <h2 id="welcome-title">ドンクラッシュへようこそ！</h2>
@@ -62,18 +72,16 @@
         <h3>ドンと得点</h3>
         <p>場札の数字と、自分の手札の数字合計が一致したらドンのチャンス。ドン返し・引きドン・開幕ドンなどでは倍率が変わる。4ラウンドの合計得点で勝者が決まるよ。</p>
       </section>
-      <label class="welcome-remember"><input type="checkbox" id="welcome-skip"> 次回から起動時の説明を表示しない（設定を保存）</label>
-      <p class="welcome-setting-note">チェックした場合も、対戦画面の「？ ルール」からいつでも確認・解除できるよ。</p>
-      <button type="button" id="welcome-start" class="welcome-start">ゲームスタート</button>
+      <button type="button" id="welcome-start" class="dc-start-button"><span class="start-word">GAME START</span></button>
       <div class="dc-rights"><span>© 2026 DON CLASH 制作・運営</span> · <a href="rights.html" target="_blank" rel="noopener noreferrer">利用規約・著作権</a></div>
     </div>
   </section>
-  <button type="button" id="welcome-help" class="welcome-help" aria-label="ルール概要を表示">？ ルール</button>
+  <button type="button" id="welcome-help" class="welcome-help" inert aria-label="ルール概要を表示">？ ルール</button>
 
 
-  <div id="game-area">
+  <div id="game-area" inert>
 
-    <h1>ドンクラッシュ <small class="solo-version">Ver2.0.2</small></h1>
+    <h1>ドンクラッシュ <small class="solo-version">Ver2.0.3</small></h1>
 
     <!-- 点数 -->
     <div id="score-area"></div>
@@ -328,16 +336,16 @@
 
 <!-- JS -->
 
-<script src="theme.js?v=202"></script>
-<script src="rules.js?v=202"></script>
-<script src="effects.js?v=202"></script>
-<script src="cpu.js?v=202"></script>
-<script src="game-core.js?v=202"></script>
-<script src="game-actions.js?v=202"></script>
-<script src="game-don.js?v=202"></script>
-<script src="game-ui.js?v=202"></script>
-<script src="game-init.js?v=202"></script>
-<script src="welcome.js?v=202"></script>
+<script src="theme.js?v=203"></script>
+<script src="rules.js?v=203"></script>
+<script src="effects.js?v=203"></script>
+<script src="cpu.js?v=203"></script>
+<script src="game-core.js?v=203"></script>
+<script src="game-actions.js?v=203"></script>
+<script src="game-don.js?v=203"></script>
+<script src="game-ui.js?v=203"></script>
+<script src="game-init.js?v=203"></script>
+<script src="welcome.js?v=203"></script>
 <script>
   // Ver1.9.6: 小画面では役札の説明を折りたたみ、対戦領域を優先。
   (function () {
